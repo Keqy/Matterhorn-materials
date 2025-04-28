@@ -23,6 +23,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Matterhorn-materials
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        loginwindow.h loginwindow.cpp loginwindow.ui
+        resources.qrc
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Matterhorn-materials APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
