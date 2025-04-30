@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         loginwindow.h loginwindow.cpp loginwindow.ui
         resources.qrc
+        materialswindow.h materialswindow.cpp materialswindow.ui
 
     )
 # Define target properties for Android with Qt 6 as:

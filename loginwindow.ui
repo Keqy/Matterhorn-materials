@@ -23,19 +23,32 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Вход</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="matterhornLogo">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>:/image/logo/images/logo.png</pixmap>
+      <pixmap resource="resources.qrc">:/images/logo/images/logo.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>3</number>
      </property>
     </widget>
    </item>
@@ -45,7 +58,8 @@
       <widget class="QLabel" name="loginLabel">
        <property name="font">
         <font>
-         <family>Cambria</family>
+         <family>Segoe UI</family>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -54,13 +68,21 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="loginLine"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="passwordLabel_2">
+      <widget class="QLineEdit" name="loginLine">
        <property name="font">
         <font>
-         <family>Cambria</family>
+         <family>Segoe UI</family>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="passwordLabel">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -69,7 +91,14 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="passwordLine"/>
+      <widget class="QLineEdit" name="passwordLine">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -77,6 +106,7 @@
     <widget class="QLabel" name="errorLabel">
      <property name="font">
       <font>
+       <family>Segoe UI</family>
        <bold>false</bold>
       </font>
      </property>
@@ -107,7 +137,8 @@
       <widget class="QPushButton" name="loginButton">
        <property name="font">
         <font>
-         <family>Cambria</family>
+         <family>Segoe UI</family>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -119,7 +150,8 @@
       <widget class="QPushButton" name="exitButton">
        <property name="font">
         <font>
-         <family>Cambria</family>
+         <family>Segoe UI</family>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -131,6 +163,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
