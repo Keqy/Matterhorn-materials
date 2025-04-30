@@ -6,9 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->materialsButton, &QPushButton::clicked, this, &MainWindow::materialsButtonClicked);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::materialsButtonClicked()
+{
+
 }

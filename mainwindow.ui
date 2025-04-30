@@ -6,26 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>288</height>
+    <width>521</width>
+    <height>91</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Маттерхорн</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>416</width>
-     <height>22</height>
-    </rect>
-   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="calculatorButton">
+      <property name="text">
+       <string>Калькуляция</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="materialsButton">
+      <property name="text">
+       <string>Справочник</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
