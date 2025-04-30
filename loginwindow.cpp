@@ -6,10 +6,10 @@ LoginWindow::LoginWindow(QWidget *parent)
     , ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
-    connect(ui->loginButton, &QPushButton::clicked, this, &LoginWindow::loginButtonClicked);
-    connect(ui->exitButton, &QPushButton::clicked, this, &LoginWindow::exitButtonClicked);
-    connect(ui->loginLine, &QLineEdit::editingFinished, this, &LoginWindow::loginLineEditingFinished);
-    connect(ui->passwordLine, &QLineEdit::editingFinished, this, &LoginWindow::passwordLineEditingFinished);
+    connect(ui->loginButton, &QPushButton::clicked, this, &LoginWindow::login);
+    connect(ui->exitButton, &QPushButton::clicked, this, &LoginWindow::exit);
+    connect(ui->loginLine, &QLineEdit::editingFinished, this, &LoginWindow::setPasswordLineFocus);
+    connect(ui->passwordLine, &QLineEdit::editingFinished, this, &LoginWindow::setLoginButtonFocus);
 }
 
 LoginWindow::~LoginWindow()
@@ -17,7 +17,7 @@ LoginWindow::~LoginWindow()
     delete ui;
 }
 
-void LoginWindow::loginButtonClicked()
+void LoginWindow::login()
 {
     QString login = ui->loginLine->text();
     QString password = ui->passwordLine->text();
@@ -32,20 +32,20 @@ void LoginWindow::loginButtonClicked()
 }
 
 
-void LoginWindow::exitButtonClicked()
+void LoginWindow::exit()
 {
     this->close();
 }
 
 
-void LoginWindow::loginLineEditingFinished()
+void LoginWindow::setPasswordLineFocus()
 {
     ui->passwordLine->setFocus();
 }
 
 
-void LoginWindow::passwordLineEditingFinished()
+void LoginWindow::setLoginButtonFocus()
 {
-    loginButtonClicked();
+    login();
 }
 

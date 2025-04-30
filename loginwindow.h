@@ -16,10 +16,10 @@ public:
     ~LoginWindow();
 
 private slots:
-    void loginButtonClicked();
-    void exitButtonClicked();
-    void loginLineEditingFinished();
-    void passwordLineEditingFinished();
+    void login();
+    void exit();
+    void setLoginButtonFocus();
+    void setPasswordLineFocus();
 
 private:
     Ui::LoginWindow *ui;
