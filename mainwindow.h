@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "materialswindow.h"
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -18,9 +20,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void materialsButtonClicked();
+    void openMaterialsWindow();
 
 private:
     Ui::MainWindow *ui;
+    MaterialsWindow *materialsWindow = nullptr;
 };
 #endif // MAINWINDOW_H
