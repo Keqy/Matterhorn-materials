@@ -1,6 +1,7 @@
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
+#include <QSqlDatabase>
 #include <QWidget>
 
 namespace Ui {
@@ -21,8 +22,12 @@ private slots:
     void setLoginButtonFocus();
     void setPasswordLineFocus();
 
+signals:
+    void login_signal();
+
 private:
     Ui::LoginWindow *ui;
+    QSqlDatabase db;
 };
 
 #endif // LOGINWINDOW_H
