@@ -80,6 +80,3 @@ CMakeLists.txt.user*
 .rcc/
 .uic/
 /build*/
-
-# Custom files
-secret.txt

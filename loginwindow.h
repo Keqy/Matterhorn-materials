@@ -16,18 +16,20 @@ public:
     explicit LoginWindow(QWidget *parent = nullptr);
     ~LoginWindow();
 
+signals:
+    void login_signal();
+
+private:
+    QMap<QString, QString> parseDatabaseConfig(const QString &file);
+
+    Ui::LoginWindow *ui;
+    QSqlDatabase db;
+
 private slots:
     void login();
     void exit();
     void setLoginButtonFocus();
     void setPasswordLineFocus();
-
-signals:
-    void login_signal();
-
-private:
-    Ui::LoginWindow *ui;
-    QSqlDatabase db;
 };
 
 #endif // LOGINWINDOW_H
