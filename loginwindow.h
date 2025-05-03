@@ -20,7 +20,7 @@ signals:
     void login_signal();
 
 private:
-    QMap<QString, QString> parseDatabaseConfig(const QString &file);
+    QMap<QString, QString> parseDatabaseConfig(const QString &filePath);
 
     Ui::LoginWindow *ui;
     QSqlDatabase db;

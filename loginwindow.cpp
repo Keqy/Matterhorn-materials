@@ -16,8 +16,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     ui->setupUi(this);
     QObject::connect(ui->loginButton, &QPushButton::clicked, this, &LoginWindow::login);
     QObject::connect(ui->exitButton, &QPushButton::clicked, this, &LoginWindow::exit);
-    QObject::connect(ui->loginLine, &QLineEdit::editingFinished, this, &LoginWindow::setPasswordLineFocus);
-    QObject::connect(ui->passwordLine, &QLineEdit::editingFinished, this, &LoginWindow::setLoginButtonFocus);
+    QObject::connect(ui->loginLine, &QLineEdit::returnPressed, this, &LoginWindow::setPasswordLineFocus);
+    QObject::connect(ui->passwordLine, &QLineEdit::returnPressed, this, &LoginWindow::setLoginButtonFocus);
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", "login_connection");
     QMap<QString, QString> config = parseDatabaseConfig("config/bd.config");
@@ -34,39 +34,36 @@ LoginWindow::~LoginWindow()
     db.removeDatabase("login_connection");
 }
 
-// TODO: Провести рефакторинг стилистики кода этой функции.
-QMap<QString, QString> LoginWindow::parseDatabaseConfig(const QString &file)
+QMap<QString, QString> LoginWindow::parseDatabaseConfig(const QString &filePath)
 {
-    QFile configFile(file);
+    QFile configFile(filePath);
     if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::critical(this, "Ошибка открытия файла bd.config", configFile.errorString());
-        throw;
+        throw std::runtime_error("Ошибка открытия файла bd.config — " + configFile.errorString().toStdString());
     }
 
     QMap<QString, QString> dbConfig;
-    // Регулярное выражение формата KEY=VALUE.
-    static QRegularExpression regex(R"(^\s*([A-Z_]+)\s*=\s*(.+?)\s*$)");
+    static const QRegularExpression regex(R"(^\s*([A-Z_]+)\s*=\s*(.+?)\s*$)"); // Регулярное выражение формата KEY=VALUE.
     QRegularExpressionMatch match;
 
-    QStringList errorLines; // Список неккоретных строк.
-    const QStringList connectionData = QString(configFile.readAll()).split("\n");
-    for (const QString &line : connectionData) {
+    QStringList errorLines;
+    const QStringList configLines = QString(configFile.readAll()).split("\n");
+    for (const QString &line : configLines) {
         if (line.isEmpty() || line.startsWith("#")) {
             continue;
         }
 
-        // Поиск соответствия формату "KEY=VALUE".
+        // Поиск параметров по соответствию формату regex.
         match = regex.match(line);
         if (match.hasMatch()) {
             QString key = match.captured(1);
             QString value = match.captured(2);
             dbConfig.insert(key, value);
         } else {
-            // Собирает некорректные строки.
+            // Неккоректные строки.
             errorLines << line;
         }
     }
-    // Предупреждение о неккоректных строках.
     if (!errorLines.isEmpty()) {
         QMessageBox::warning(this,
                              "Предупреждение .config",
@@ -74,7 +71,7 @@ QMap<QString, QString> LoginWindow::parseDatabaseConfig(const QString &file)
     }
     configFile.close();
 
-    // Проверка наличия всех параметров в спаршеном конфиге.
+    // Проверка наличия необходимых параметров в спаршеном конфиге.
     QStringList missingOptions;
     const QStringList requiredOptions = {"HOST", "DBNAME", "USERNAME", "PASSWORD"};
     for (const QString &option : requiredOptions) {
@@ -82,12 +79,12 @@ QMap<QString, QString> LoginWindow::parseDatabaseConfig(const QString &file)
             missingOptions << option;
         }
     }
-    // Отсутствие параметров является критической ошибкой. Невозможно установить соединение с БД.
     if (!missingOptions.isEmpty()) {
         QMessageBox::critical(this,
                               "Ошибка конфигурации",
                               "Отсутствует параметр:\n" + missingOptions.join("\n"));
-        throw;
+        throw std::invalid_argument("Отсутсвуют параметры конфигурации\n"
+                                    + missingOptions.join("\n").toStdString());
     }
 
     return dbConfig;
@@ -115,18 +112,20 @@ void LoginWindow::login()
     } else {
         if (query.first())
             emit login_signal(); // Сигнал на окончание EventLoop в main.cpp. Открытие главного окна.
-        else
+        else {
             ui->errorLabel->setText("Неправильный логин или пароль");
+            ui->passwordLine->clear();
+        }
     }
 }
 
-// Меняется фокус на passwordLine по нажатию Enter в loginLine.
+// Меняется фокус по нажатию Enter в loginLine на passwordLine.
 void LoginWindow::setPasswordLineFocus()
 {
     ui->passwordLine->setFocus();
 }
 
-// Менятся фокус на loginButton по нажатию Enter в passwordLine.
+// Менятся фокус по нажатию Enter в passwordLine на loginButton.
 void LoginWindow::setLoginButtonFocus()
 {
     login();
