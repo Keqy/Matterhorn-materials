@@ -10,6 +10,11 @@
     <height>91</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Cambria</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Маттерхорн</string>
   </property>
