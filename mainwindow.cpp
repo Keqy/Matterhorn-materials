@@ -35,5 +35,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (materialsWindow) {
         materialsWindow->close();
     }
-    QMainWindow::closeEvent(event); // Продолжить стандартное закрытие окна.
+    // Продолжить стандартное закрытие окна.
+    QMainWindow::closeEvent(event);
 }

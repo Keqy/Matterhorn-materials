@@ -52,10 +52,10 @@ QMap<QString, QString> parseDatabaseConnectionConfig(const QString &filePath)
 namespace CRUD {
 void selectMaterialCategories(QSqlQuery &query)
 {
-    query.exec("SELECT * FROM material_categories");
+    query.exec("SELECT name FROM material_categories");
 
     if (query.lastError().isValid()) {
-        throw query.lastError().text();
+        QMessageBox::critical(nullptr, "Ошибка запроса к БД", query.lastError().text());
     }
 }
 } // namespace CRUD

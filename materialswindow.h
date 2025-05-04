@@ -1,6 +1,7 @@
 #ifndef MATERIALSWINDOW_H
 #define MATERIALSWINDOW_H
 
+#include <QSqlDatabase>
 #include <QWidget>
 
 namespace Ui {
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MaterialsWindow *ui;
+    QSqlDatabase db;
 };
 
 #endif // MATERIALSWINDOW_H
