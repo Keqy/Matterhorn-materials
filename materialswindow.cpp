@@ -41,11 +41,6 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     for (QTreeWidgetItem *item : items) {
         allMaterials->addChild(item);
     }
-
-    // for (int i = 0; i < 10; ++i)
-    //     items.append(new QTreeWidgetItem(static_cast<QTreeWidget *>(nullptr),
-    //                                      QStringList(QString("item: %1").arg(i))));
-    // ui->materialsTreeWidget->insertTopLevelItems(0, items);
 }
 MaterialsWindow::~MaterialsWindow()
 {
