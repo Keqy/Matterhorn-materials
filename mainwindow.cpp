@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-//#include "materialswindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,17 +16,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::openMaterialsWindow()
 {
-    // TODO: Сделать закрытие materialsWindow вместе с mainWindow.
-    // if (!materialsWindow) {
-    //     materialsWindow = new MaterialsWindow(this);
-    //     materialsWindow->setWindowFlag(Qt::Window, true);
-    //     materialsWindow->setAttribute(Qt::WA_DeleteOnClose);
-    //     materialsWindow->show();
+    if (!materialsWindow) {
+        materialsWindow = new MaterialsWindow();
+        materialsWindow->setAttribute(Qt::WA_DeleteOnClose);
+        materialsWindow->show();
 
-    //     QObject::connect(materialsWindow, &QWidget::destroyed, this, [this]() { materialsWindow = nullptr; });
-    // }
-    // else {
-    //     materialsWindow->raise();
-    //     materialsWindow->activateWindow();
-    // }
+        // Убрать указатель при закрытии окна.
+        QObject::connect(materialsWindow, &QWidget::destroyed, this, [this]() { materialsWindow = nullptr; });
+    } else {
+        materialsWindow->raise();
+        materialsWindow->activateWindow();
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    // Закрыть остальные окна.
+    if (materialsWindow) {
+        materialsWindow->close();
+    }
+    QMainWindow::closeEvent(event); // Продолжить стандартное закрытие окна.
 }
