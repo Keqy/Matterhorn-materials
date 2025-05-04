@@ -14,8 +14,11 @@ int main(int argc, char *argv[])
     loginWindow->show();
     eventLoop->exec();
 
-    delete loginWindow; loginWindow = nullptr;
-    delete eventLoop; eventLoop = nullptr;
+    delete loginWindow;
+    delete eventLoop;
+    loginWindow = nullptr;
+    eventLoop = nullptr;
+
     // TODO: Сделать так, чтобы eventLoop закрывался в случае принудительного закрытия, а не висел процессом.
 
     MainWindow mainWindow;
