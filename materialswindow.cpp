@@ -37,10 +37,10 @@ void MaterialsWindow::updateMaterialsTree()
         return;
     }
 
-    QTreeWidgetItem *allMaterialsTreeItem = new QTreeWidgetItem();
-    allMaterialsTreeItem->setText(0, "Все материалы");
-    allMaterialsTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
-    ui->materialsTreeWidget->insertTopLevelItem(0, allMaterialsTreeItem);
+    QTreeWidgetItem *rootMaterialCategoriesTreeItem = new QTreeWidgetItem();
+    rootMaterialCategoriesTreeItem->setText(0, "Все материалы");
+    rootMaterialCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
+    ui->materialsTreeWidget->insertTopLevelItem(0, rootMaterialCategoriesTreeItem);
 
     QList<QTreeWidgetItem *> items;
     while (query.next()) {
@@ -50,11 +50,11 @@ void MaterialsWindow::updateMaterialsTree()
 
 
     for (QTreeWidgetItem *item : items) {
-        allMaterialsTreeItem->addChild(item);
+        rootMaterialCategoriesTreeItem->addChild(item);
     }
 
-    QTreeWidgetItem *allJobsTreeItem = new QTreeWidgetItem();
-    allJobsTreeItem->setText(0, "Все работы");
-    allJobsTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
-    ui->materialsTreeWidget->insertTopLevelItem(1, allJobsTreeItem);
+    QTreeWidgetItem *rootWorkCategoriesTreeItem = new QTreeWidgetItem();
+    rootWorkCategoriesTreeItem->setText(0, "Все работы");
+    rootWorkCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
+    ui->materialsTreeWidget->insertTopLevelItem(1, rootWorkCategoriesTreeItem);
 }
