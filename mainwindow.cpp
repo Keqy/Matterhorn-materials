@@ -24,6 +24,7 @@ void MainWindow::openMaterialsWindow()
         // Убрать указатель при закрытии окна.
         QObject::connect(materialsWindow, &QWidget::destroyed, this, [this]() { materialsWindow = nullptr; });
     } else {
+        materialsWindow->showNormal();
         materialsWindow->raise();
         materialsWindow->activateWindow();
     }

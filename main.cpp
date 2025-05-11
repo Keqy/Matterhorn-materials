@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     LoginWindow *loginWindow = new LoginWindow;
     QEventLoop *eventLoop = new QEventLoop;
-    QObject::connect(loginWindow, &LoginWindow::login_signal, eventLoop, &QEventLoop::quit);
+    QObject::connect(loginWindow, &LoginWindow::loginSignal, eventLoop, &QEventLoop::quit);
 
     loginWindow->show();
     eventLoop->exec();
