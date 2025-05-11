@@ -1,5 +1,5 @@
 #include "loginwindow.h"
-#include "database_utils.h"
+#include "databasemanager.h"
 #include "ui_loginwindow.h"
 
 #include <QMessageBox>
@@ -17,19 +17,12 @@ LoginWindow::LoginWindow(QWidget *parent)
     QObject::connect(ui->loginLine, &QLineEdit::returnPressed, this, &LoginWindow::setPasswordLineFocus);
     QObject::connect(ui->passwordLine, &QLineEdit::returnPressed, this, &LoginWindow::setLoginButtonFocus);
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", "login_connection");
-    QMap<QString, QString> dbConfig;
-    try {
-        dbConfig = parseDatabaseConnectionConfig("config/db.config");
-    } catch (QString &errorText) {
-        QMessageBox::critical(this, "Ошибка конфигурации db.config", errorText);
-        throw std::runtime_error(errorText.toStdString());
+    QSqlDatabase db;
+    DatabaseManager dbManager;
+    dbManager.setupDatabaseConnection(db, "login_connection", "config/db.config");
+    if (!dbManager.lastError().isEmpty()) {
+        QMessageBox::critical(this, "Ошибка соединения с БД", dbManager.lastError());
     }
-
-    db.setHostName(dbConfig["HOST"]);
-    db.setDatabaseName(dbConfig["DBNAME"]);
-    db.setUserName(dbConfig["USERNAME"]);
-    db.setPassword(dbConfig["PASSWORD"]);
 }
 
 LoginWindow::~LoginWindow()
@@ -62,7 +55,7 @@ void LoginWindow::login()
     } else {
         if (query.first())
             // Сигнал на окончание EventLoop в main.cpp. Открытие главного окна.
-            emit login_signal();
+            emit loginSignal();
         else {
             ui->errorLabel->setText("Неправильный логин или пароль");
             ui->passwordLine->clear();

@@ -1,0 +1,31 @@
+#include <QString>
+#include <QSqlQuery>
+
+#ifndef DATABASEMANAGER_H
+#define DATABASEMANAGER_H
+
+class DatabaseManager
+{
+public:
+    DatabaseManager();
+
+    QString lastError() const {
+        return error;
+    }
+
+    void setupDatabaseConnection(QSqlDatabase &database, const QString &connectionName, const QString &configFilePath);
+
+signals:
+    void errorOccurred(const QString &title, const QString &error);
+
+private:
+    QString error;
+
+    QMap<QString, QString> parseDatabaseConnectionConfig(const QString &filePath);
+};
+
+namespace CRUD {
+void selectMaterialCategories(QSqlQuery &query);
+
+}
+#endif // DATABASEMANAGER_H

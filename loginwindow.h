@@ -1,6 +1,8 @@
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
+#include "databasemanager.h"
+
 #include <QSqlDatabase>
 #include <QWidget>
 
@@ -17,11 +19,12 @@ public:
     ~LoginWindow();
 
 signals:
-    void login_signal();
+    void loginSignal();
 
 private:
     Ui::LoginWindow *ui;
     QSqlDatabase db;
+    DatabaseManager dbManager;
 
 private slots:
     void login();
