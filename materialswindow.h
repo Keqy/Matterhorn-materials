@@ -23,8 +23,13 @@ signals:
 
 private:
     Ui::MaterialsWindow *ui;
+
     QSqlDatabase db;
     DatabaseManager dbManager;
+
+    void setMaterialsTableColumnWidth();
+    void setMaterialsExtraOptionsTableColumnWidth();
+    void setMaterialWorkAppropriatenessTableColumnWidth();
     void updateMaterialsTree();
 };
 

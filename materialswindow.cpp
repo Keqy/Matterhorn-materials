@@ -18,6 +18,10 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
         QMessageBox::critical(this, "Ошибка соединения с БД", dbManager.lastError());
     }
 
+
+    setMaterialsTableColumnWidth();
+    setMaterialsExtraOptionsTableColumnWidth();
+    setMaterialWorkAppropriatenessTableColumnWidth();
     updateMaterialsTree();
 }
 
@@ -57,4 +61,29 @@ void MaterialsWindow::updateMaterialsTree()
     rootWorkCategoriesTreeItem->setText(0, "Все работы");
     rootWorkCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
     ui->materialsTreeWidget->insertTopLevelItem(1, rootWorkCategoriesTreeItem);
+}
+
+// All the "set...ColumnWidth" functions will needs refactoring
+// if the MaterialsWindow size is going change.
+void MaterialsWindow::setMaterialsTableColumnWidth()
+{
+    ui->materialsTableWidget->setColumnWidth(0, 350);
+    ui->materialsTableWidget->setColumnWidth(1, 100);
+    ui->materialsTableWidget->setColumnWidth(2, 170);
+    ui->materialsTableWidget->setColumnWidth(3, 130);
+    ui->materialsTableWidget->setColumnWidth(4, 110);
+    ui->materialsTableWidget->setColumnWidth(5, 110);
+}
+
+void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
+{
+    ui->materialsExtraOptionsTableWidget->setColumnWidth(0, 247);
+    ui->materialsExtraOptionsTableWidget->setColumnWidth(1, 140);
+    ui->materialsExtraOptionsTableWidget->setColumnWidth(2, 99);
+}
+
+void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
+{
+    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, 243);
+    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, 243);
 }
