@@ -21,7 +21,7 @@ void MainWindow::openMaterialsWindow()
         materialsWindow->setAttribute(Qt::WA_DeleteOnClose);
         materialsWindow->show();
 
-        // Убрать указатель при закрытии окна.
+        // Deletes the pointer when the window is destroed.
         QObject::connect(materialsWindow, &QWidget::destroyed, this, [this]() { materialsWindow = nullptr; });
     } else {
         materialsWindow->showNormal();
@@ -32,10 +32,10 @@ void MainWindow::openMaterialsWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    // Закрыть остальные окна.
+    // TODO: Close other windows, too.
     if (materialsWindow) {
         materialsWindow->close();
     }
-    // Продолжить стандартное закрытие окна.
+    // Continues with the usual closeEvent.
     QMainWindow::closeEvent(event);
 }

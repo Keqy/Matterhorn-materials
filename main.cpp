@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     loginWindow = nullptr;
     eventLoop = nullptr;
 
-    // TODO: Сделать так, чтобы eventLoop закрывался в случае принудительного закрытия, а не висел процессом.
+    // TODO: Fix process freezing on early exit without login.
 
     MainWindow mainWindow;
     mainWindow.show();

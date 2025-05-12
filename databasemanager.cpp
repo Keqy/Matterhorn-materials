@@ -16,7 +16,7 @@ QMap<QString, QString> DatabaseManager::parseDatabaseConnectionConfig(const QStr
         throw std::invalid_argument(("Не удалось открыть конфиг " + filePath).toStdString());
     }
 
-    // Регулярное выражение формата KEY=VALUE.
+    // Regular expression "KEY=VALUE".
     static const QRegularExpression regex(R"(^\s*([A-Z_]+)\s*=\s*(.+?)\s*$)");
     QRegularExpressionMatch match;
 
@@ -27,7 +27,7 @@ QMap<QString, QString> DatabaseManager::parseDatabaseConnectionConfig(const QStr
             continue;
         }
 
-        // Поиск параметров по соответствию формату regex.
+        // Searches for a regular expression match.
         match = regex.match(line);
         if (match.hasMatch()) {
             QString key = match.captured(1);
@@ -37,7 +37,7 @@ QMap<QString, QString> DatabaseManager::parseDatabaseConnectionConfig(const QStr
     }
     configFile.close();
 
-    // Проверка наличия необходимых параметров в спаршеном конфиге.
+    // Check if the required parameters are present in the parsed config.
     QStringList missingOptions;
     const QStringList requiredOptions = {"DRIVER", "HOST", "DBNAME", "USERNAME", "PASSWORD"};
     for (const QString &option : requiredOptions) {
@@ -56,7 +56,7 @@ void DatabaseManager::setupDatabaseConnection(QSqlDatabase &database, const QStr
 {
     QMap<QString, QString> dbConfig = parseDatabaseConnectionConfig(configFilePath);
     if (!error.isEmpty()) {
-        //TODO: лог std::runtime_error(error.toStdString());
+        //TODO: log std::runtime_error(error.toStdString());
         return;
     } else {
         database = QSqlDatabase::addDatabase(dbConfig["DRIVER"], connectionName);
