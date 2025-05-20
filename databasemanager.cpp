@@ -72,4 +72,33 @@ void selectMaterialCategories(QSqlQuery &query)
 {
     query.exec("SELECT name FROM material_categories;");
 }
+
+void selectWorkCategories(QSqlQuery &query)
+{
+    query.exec("SELECT name FROM work_categories;");
+}
+
+void selectMaterialTypes(QSqlQuery &query)
+{
+    query.exec("SELECT "
+               "t.name, "
+               "m.name, "
+               "m.measure, "
+               "m.cost_price, "
+               "m.min_amount, "
+               "m.weight, "
+               "m.waste_rate "
+               "FROM "
+               "materials m "
+               "JOIN "
+               "material_categories c "
+               "ON m.category_id = c.id;");
+}
+
+void selectMaterialsByName(QSqlQuery &query, const QString &name)
+{
+    query.prepare("SELECT name, measure, cost_price, min_amount, weight, waste_rate FROM materials WHERE name = ?;");
+    query.addBindValue(name);
+    query.exec();
+}
 } // namespace CRUD
