@@ -10,6 +10,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     , ui(new Ui::MaterialsWindow)
 {
     ui->setupUi(this);
+    QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedMaterialData);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -31,7 +32,26 @@ MaterialsWindow::~MaterialsWindow()
     db.removeDatabase("materials_connection");
 }
 
-void MaterialsWindow::updateMaterialsTree()
+void MaterialsWindow::parseSelectedMaterialData()
+{
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    QString materialName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
+    // Рефакторить на selectMaterialByName.
+    CRUD::selectMaterialsByName(query, materialName);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+    while (query.next()) {
+        for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
+            ui->materialsTableWidget->setRowCount(i+1);
+            ui->materialsTableWidget->setItem(0, i, new QTableWidgetItem(query.value(i).toString())); //TODO: сделать для нескольких сделок;
+        }
+    }
+}
+
+void MaterialsWindow::parseMaterialCategoriesInRootTreeItem(QTreeWidgetItem *rootCategoriesTreeItem)
 {
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
@@ -40,22 +60,27 @@ void MaterialsWindow::updateMaterialsTree()
         QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
         return;
     }
+    QList<QTreeWidgetItem *> materialCategories;
+    while (query.next()) {
+        materialCategories.append(new QTreeWidgetItem(static_cast<QTreeWidget *>(nullptr),
+                                                      query.value(0).toStringList()));
+    }
+    for (QTreeWidgetItem *category : materialCategories) {
+        category->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
+        rootCategoriesTreeItem->addChild(category);
+    }
+}
+
+void MaterialsWindow::updateMaterialsTree()
+{
+    ui->materialsTreeWidget->clear();
 
     QTreeWidgetItem *rootMaterialCategoriesTreeItem = new QTreeWidgetItem();
     rootMaterialCategoriesTreeItem->setText(0, "Все материалы");
     rootMaterialCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
     ui->materialsTreeWidget->insertTopLevelItem(0, rootMaterialCategoriesTreeItem);
 
-    QList<QTreeWidgetItem *> items;
-    while (query.next()) {
-        items.append(new QTreeWidgetItem(static_cast<QTreeWidget *>(nullptr),
-                                         query.value(0).toStringList()));
-    }
-
-
-    for (QTreeWidgetItem *item : items) {
-        rootMaterialCategoriesTreeItem->addChild(item);
-    }
+    parseMaterialCategoriesInRootTreeItem(rootMaterialCategoriesTreeItem);
 
     QTreeWidgetItem *rootWorkCategoriesTreeItem = new QTreeWidgetItem();
     rootWorkCategoriesTreeItem->setText(0, "Все работы");

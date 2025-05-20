@@ -5,6 +5,7 @@
 
 #include <QSqlDatabase>
 #include <QWidget>
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class MaterialsWindow;
@@ -31,6 +32,8 @@ private:
     void setMaterialsExtraOptionsTableColumnWidth();
     void setMaterialWorkAppropriatenessTableColumnWidth();
     void updateMaterialsTree();
+    void parseMaterialCategoriesInRootTreeItem(QTreeWidgetItem *rootCategoriesTreeItem);
+    void parseSelectedMaterialData();
 };
 
 #endif // MATERIALSWINDOW_H
