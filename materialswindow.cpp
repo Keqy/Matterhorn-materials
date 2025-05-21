@@ -32,23 +32,20 @@ MaterialsWindow::~MaterialsWindow()
     db.removeDatabase("materials_connection");
 }
 
-void MaterialsWindow::parseSelectedMaterialData()
+void MaterialsWindow::updateMaterialsTree()
 {
-    QSqlDatabase db = QSqlDatabase::database("materials_connection");
-    QSqlQuery query(db);
-    QString materialName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
-    // Рефакторить на selectMaterialByName.
-    CRUD::selectMaterialsByName(query, materialName);
-    if (query.lastError().isValid()) {
-        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
-        return;
-    }
-    while (query.next()) {
-        for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
-            ui->materialsTableWidget->setRowCount(i+1);
-            ui->materialsTableWidget->setItem(0, i, new QTableWidgetItem(query.value(i).toString())); //TODO: сделать для нескольких сделок;
-        }
-    }
+    ui->materialsTreeWidget->clear();
+
+    QTreeWidgetItem *rootMaterialCategoriesTreeItem = new QTreeWidgetItem();
+    rootMaterialCategoriesTreeItem->setText(0, "Все материалы");
+    rootMaterialCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
+    ui->materialsTreeWidget->insertTopLevelItem(0, rootMaterialCategoriesTreeItem);
+    parseMaterialCategoriesInRootTreeItem(rootMaterialCategoriesTreeItem);
+
+    QTreeWidgetItem *rootWorkCategoriesTreeItem = new QTreeWidgetItem();
+    rootWorkCategoriesTreeItem->setText(0, "Все работы");
+    rootWorkCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
+    ui->materialsTreeWidget->insertTopLevelItem(1, rootWorkCategoriesTreeItem);
 }
 
 void MaterialsWindow::parseMaterialCategoriesInRootTreeItem(QTreeWidgetItem *rootCategoriesTreeItem)
@@ -71,23 +68,7 @@ void MaterialsWindow::parseMaterialCategoriesInRootTreeItem(QTreeWidgetItem *roo
     }
 }
 
-void MaterialsWindow::updateMaterialsTree()
-{
-    ui->materialsTreeWidget->clear();
-
-    QTreeWidgetItem *rootMaterialCategoriesTreeItem = new QTreeWidgetItem();
-    rootMaterialCategoriesTreeItem->setText(0, "Все материалы");
-    rootMaterialCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen));
-    ui->materialsTreeWidget->insertTopLevelItem(0, rootMaterialCategoriesTreeItem);
-
-    parseMaterialCategoriesInRootTreeItem(rootMaterialCategoriesTreeItem);
-
-    QTreeWidgetItem *rootWorkCategoriesTreeItem = new QTreeWidgetItem();
-    rootWorkCategoriesTreeItem->setText(0, "Все работы");
-    rootWorkCategoriesTreeItem->setIcon(0, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
-    ui->materialsTreeWidget->insertTopLevelItem(1, rootWorkCategoriesTreeItem);
-}
-
+// --- UI
 // All the "set...ColumnWidth" functions will needs refactoring
 // if the MaterialsWindow size is going change.
 void MaterialsWindow::setMaterialsTableColumnWidth()
@@ -111,4 +92,24 @@ void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
 {
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, 243);
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, 243);
+}
+
+// --- Signals
+void MaterialsWindow::parseSelectedMaterialData()
+{
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    QString materialName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
+    // Рефакторить на selectMaterialByName.
+    CRUD::selectMaterialsByName(query, materialName);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+    while (query.next()) {
+        for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
+            ui->materialsTableWidget->setRowCount(i+1);
+            ui->materialsTableWidget->setItem(0, i, new QTableWidgetItem(query.value(i).toString())); //TODO: сделать для нескольких сделок;
+        }
+    }
 }
