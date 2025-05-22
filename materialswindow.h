@@ -28,12 +28,14 @@ private:
     QSqlDatabase db;
     DatabaseManager dbManager;
 
-    void setMaterialsTableColumnWidth();
-    void setMaterialsExtraOptionsTableColumnWidth();
-    void setMaterialWorkAppropriatenessTableColumnWidth();
-    void updateMaterialsTree();
-    void parseMaterialCategoriesInRootTreeItem(QTreeWidgetItem *rootCategoriesTreeItem);
+    inline void setMaterialsTableColumnWidth();
+    inline void setMaterialsExtraOptionsTableColumnWidth();
+    inline void setMaterialWorkAppropriatenessTableColumnWidth();
+    void updateMaterialsTreeWidget();
     void parseSelectedMaterialData();
+    void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
+    void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
+    QList<QTreeWidgetItem *> getMaterialCategories();
 };
 
 #endif // MATERIALSWINDOW_H
