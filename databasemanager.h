@@ -27,7 +27,7 @@ private:
 namespace CRUD {
 void selectMaterialCategories(QSqlQuery &query);
 void selectWorkCategories(QSqlQuery &query);
-void selectMaterialTypes(QSqlQuery &query);
-void selectMaterialsByName(QSqlQuery &query, const QString &name);
+void selectMaterialTypesByCategory(QSqlQuery &query, QString categoryName);
+void selectMaterialsByType(QSqlQuery &query, const QString &typeName);
 }
 #endif // DATABASEMANAGER_H
