@@ -30,19 +30,20 @@ private:
     inline void setMaterialsTableColumnWidth();
     inline void setMaterialsExtraOptionsTableColumnWidth();
     inline void setMaterialWorkAppropriatenessTableColumnWidth();
+    void setMaterialsTableWidgetLock(const bool &option);
     void updateMaterialsTreeWidget();
     void parseSelectedMaterialData();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
+    inline void changeMaterialsTableWidgetAccess();
+    inline void addMaterialsTableWidgetRow();
+    inline void removeMaterialsTableWidgetRow();
 
     // Database interactions.
     QSqlDatabase db;
     DatabaseManager dbManager;
 
     QList<QTreeWidgetItem *> getMaterialCategories();
-    void addMaterialsTableWidgetRow();
-    void changeMaterialsTableWidgetAccess();
-    void removeMaterialsTableWidgetRow();
 };
 
 #endif // MATERIALSWINDOW_H
