@@ -23,10 +23,9 @@ signals:
     void errorOccurred(const QString &title, const QString &error);
 
 private:
+    // UI.
     Ui::MaterialsWindow *ui;
-
-    QSqlDatabase db;
-    DatabaseManager dbManager;
+    bool isMaterialsTableWidgetLocked = true;
 
     inline void setMaterialsTableColumnWidth();
     inline void setMaterialsExtraOptionsTableColumnWidth();
@@ -35,7 +34,15 @@ private:
     void parseSelectedMaterialData();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
+
+    // Database interactions.
+    QSqlDatabase db;
+    DatabaseManager dbManager;
+
     QList<QTreeWidgetItem *> getMaterialCategories();
+    void addMaterialsTableWidgetRow();
+    void changeMaterialsTableWidgetAccess();
+    void removeMaterialsTableWidgetRow();
 };
 
 #endif // MATERIALSWINDOW_H

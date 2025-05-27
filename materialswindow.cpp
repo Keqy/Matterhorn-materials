@@ -11,6 +11,9 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedMaterialData);
+    QObject::connect(ui->materialsTableWidgetAccessButton, &QPushButton::clicked, this, &MaterialsWindow::changeMaterialsTableWidgetAccess);
+    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::addMaterialsTableWidgetRow);
+    QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -34,6 +37,7 @@ MaterialsWindow::~MaterialsWindow()
 void MaterialsWindow::updateMaterialsTreeWidget()
 {
     ui->materialsTreeWidget->clear();
+
     // Materials.
     QTreeWidgetItem *rootMaterialCategoriesTreeWidgetItem = new QTreeWidgetItem();
     rootMaterialCategoriesTreeWidgetItem->setText(0, "Все материалы");
@@ -104,11 +108,52 @@ void MaterialsWindow::parseSelectedMaterialData()
         QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
         return;
     }
-    while (query.next()) {
-        for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
-            ui->materialsTableWidget->setRowCount(i+1);
-            ui->materialsTableWidget->setItem(0, i, new QTableWidgetItem(query.value(i).toString())); //TODO: сделать для нескольких сделок;
+    if (query.value(0).isValid())
+    {
+        ui->materialsTableWidget->setEnabled(true);
+        ui->materialsTableWidget->setRowCount(query.size());
+        int row = 0;
+        while (query.next()) {
+            for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
+                ui->materialsTableWidget->setItem(row, i, new QTableWidgetItem(query.value(i).toString()));
+            }
+            ++row;
         }
+    } else {
+        ui->materialsTableWidget->setEnabled(false);
+    }
+
+
+}
+
+void MaterialsWindow::changeMaterialsTableWidgetAccess()
+{
+    if (isMaterialsTableWidgetLocked) {
+        // If locked, unlock.
+        ui->materialsTableWidget->setEditTriggers(QAbstractItemView::CurrentChanged);
+        ui->materialsTableWidgetAccessButton->setText("Заблокировать");
+        isMaterialsTableWidgetLocked = false;
+    } else {
+        // Lock.
+        ui->materialsTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ui->materialsTableWidgetAccessButton->setText("Разблокировать");
+        isMaterialsTableWidgetLocked = true;
+    }
+}
+
+void MaterialsWindow::addMaterialsTableWidgetRow()
+{
+    if (isMaterialsTableWidgetLocked == false) {
+        int rowCount = ui->materialsTableWidget->rowCount();
+        ui->materialsTableWidget->setRowCount(rowCount + 1);
+    }
+}
+
+void MaterialsWindow::removeMaterialsTableWidgetRow()
+{
+    if (isMaterialsTableWidgetLocked == false) {
+        int currentRow = ui->materialsTableWidget->currentRow();
+        ui->materialsTableWidget->removeRow(currentRow);
     }
 }
 
@@ -122,7 +167,7 @@ inline void MaterialsWindow::setMaterialsTableColumnWidth()
     ui->materialsTableWidget->setColumnWidth(2, 170);
     ui->materialsTableWidget->setColumnWidth(3, 130);
     ui->materialsTableWidget->setColumnWidth(4, 110);
-    ui->materialsTableWidget->setColumnWidth(5, 110);
+    ui->materialsTableWidget->setColumnWidth(5, 100);
 }
 
 inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
