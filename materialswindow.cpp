@@ -101,6 +101,7 @@ void MaterialsWindow::parseSelectedMaterialData()
 {
     setMaterialsTableWidgetLock(true);
     ui->materialsTableWidget->clearContents();
+    ui->materialsTableWidget->setRowCount(0);
 
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
@@ -126,13 +127,13 @@ void MaterialsWindow::parseSelectedMaterialData()
     } else {
         ui->materialsTableWidget->setEnabled(false);
     }
-
-
 }
 
 inline void MaterialsWindow::changeMaterialsTableWidgetAccess()
 {
-    setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
+    if (ui->materialsTableWidget->isEnabled()) {
+        setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
+    }
 }
 
 inline void MaterialsWindow::addMaterialsTableWidgetRow()
@@ -189,4 +190,9 @@ inline void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
         ui->materialsTableWidgetAccessButton->setText("Заблокировать");
         isMaterialsTableWidgetLocked = false;
     }
+}
+
+void MaterialsWindow::closeEvent(QCloseEvent *event)
+{
+    MaterialsWindow::closeEvent(event);
 }

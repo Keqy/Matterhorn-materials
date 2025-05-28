@@ -22,6 +22,9 @@ public:
 signals:
     void errorOccurred(const QString &title, const QString &error);
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     // UI.
     Ui::MaterialsWindow *ui;
@@ -44,6 +47,11 @@ private:
     DatabaseManager dbManager;
 
     QList<QTreeWidgetItem *> getMaterialCategories();
+
+    // Counter.
+    void zeroChangeCounter();
+    void incrementChangeCounter();
+    int getChangeCounter();
 };
 
 #endif // MATERIALSWINDOW_H
