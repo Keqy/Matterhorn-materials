@@ -115,7 +115,6 @@ void MaterialsWindow::parseSelectedMaterialData()
     query.first(); // REFACTOR THIS...
     if (query.isValid())
     {
-        ui->materialsTableWidget->setEnabled(true);
         ui->materialsTableWidget->setRowCount(query.size());
         int row = 0;
         do { // AND THIS.
@@ -124,16 +123,11 @@ void MaterialsWindow::parseSelectedMaterialData()
             }
             ++row;
         } while (query.next());
-    } else {
-        ui->materialsTableWidget->setEnabled(false);
     }
 }
-
 inline void MaterialsWindow::changeMaterialsTableWidgetAccess()
 {
-    if (ui->materialsTableWidget->isEnabled()) {
-        setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
-    }
+    setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
 }
 
 inline void MaterialsWindow::addMaterialsTableWidgetRow()
@@ -183,11 +177,13 @@ inline void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
     if (lock) {
         ui->materialsTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->materialsTableWidgetAccessButton->setText("Разблокировать");
+        ui->materialsTableWidget->setEnabled(false);
         isMaterialsTableWidgetLocked = true;
     } else {
         // Unlock.
         ui->materialsTableWidget->setEditTriggers(QAbstractItemView::CurrentChanged);
         ui->materialsTableWidgetAccessButton->setText("Заблокировать");
+        ui->materialsTableWidget->setEnabled(true);
         isMaterialsTableWidgetLocked = false;
     }
 }

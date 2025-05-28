@@ -33,7 +33,7 @@ private:
     inline void setMaterialsTableColumnWidth();
     inline void setMaterialsExtraOptionsTableColumnWidth();
     inline void setMaterialWorkAppropriatenessTableColumnWidth();
-    void setMaterialsTableWidgetLock(const bool &option);
+    void setMaterialsTableWidgetLock(const bool &lock);
     void updateMaterialsTreeWidget();
     void parseSelectedMaterialData();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
