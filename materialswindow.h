@@ -23,7 +23,7 @@ signals:
     void errorOccurred(const QString &title, const QString &error);
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    //void closeEvent(QCloseEvent *event) override;
 
 private:
     // UI.
@@ -38,9 +38,10 @@ private:
     void parseSelectedMaterialData();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
-    inline void changeMaterialsTableWidgetAccess();
+    void changeMaterialsTableWidgetAccess();
     inline void addMaterialsTableWidgetRow();
     inline void removeMaterialsTableWidgetRow();
+    bool isMaterialTypeSelected() const;
 
     // Database interactions.
     QSqlDatabase db;

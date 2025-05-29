@@ -184,7 +184,7 @@
        <item>
         <widget class="QTableWidget" name="materialsTableWidget">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>

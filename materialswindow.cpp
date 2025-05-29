@@ -124,21 +124,17 @@ void MaterialsWindow::parseSelectedMaterialData()
             }
             ++row;
         } while (query.next());
-    } else {
-        ui->materialsTableWidget->setEnabled(false);
     }
 }
 
 inline void MaterialsWindow::changeMaterialsTableWidgetAccess()
 {
-    if (ui->materialsTableWidget->isEnabled()) {
-        setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
-    }
+    setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
 }
 
 inline void MaterialsWindow::addMaterialsTableWidgetRow()
 {
-    if (isMaterialsTableWidgetLocked == false) {
+    if (!isMaterialsTableWidgetLocked) {
         int rowCount = ui->materialsTableWidget->rowCount();
         ui->materialsTableWidget->setRowCount(rowCount + 1);
     }
@@ -146,7 +142,7 @@ inline void MaterialsWindow::addMaterialsTableWidgetRow()
 
 inline void MaterialsWindow::removeMaterialsTableWidgetRow()
 {
-    if (isMaterialsTableWidgetLocked == false) {
+    if (!isMaterialsTableWidgetLocked) {
         int currentRow = ui->materialsTableWidget->currentRow();
         ui->materialsTableWidget->removeRow(currentRow);
     }
@@ -178,7 +174,7 @@ inline void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, 243);
 }
 
-inline void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
+void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
 {
     if (lock) {
         ui->materialsTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -186,13 +182,21 @@ inline void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
         isMaterialsTableWidgetLocked = true;
     } else {
         // Unlock.
-        ui->materialsTableWidget->setEditTriggers(QAbstractItemView::CurrentChanged);
-        ui->materialsTableWidgetAccessButton->setText("Заблокировать");
-        isMaterialsTableWidgetLocked = false;
+        if (isMaterialTypeSelected()) {
+            ui->materialsTableWidget->setEditTriggers(QAbstractItemView::CurrentChanged);
+            ui->materialsTableWidgetAccessButton->setText("Заблокировать");
+            isMaterialsTableWidgetLocked = false;
+        }
     }
 }
 
-void MaterialsWindow::closeEvent(QCloseEvent *event)
+bool MaterialsWindow::isMaterialTypeSelected() const
 {
-    MaterialsWindow::closeEvent(event);
+    QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
+    return item && item->parent() && item->parent()->parent();
 }
+
+// void MaterialsWindow::closeEvent(QCloseEvent *event)
+// {
+//     MaterialsWindow::closeEvent(event);
+// }
