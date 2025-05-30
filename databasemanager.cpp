@@ -22,17 +22,18 @@ void selectWorkCategories(QSqlQuery &query)
 void selectMaterialTypesByCategory(QSqlQuery &query, QString categoryName)
 {
     query.prepare("SELECT t.name "
-               "FROM material_types t "
-               "JOIN material_categories c "
-               "ON t.category_id = c.id "
-               "WHERE c.name = ?");
+                  "FROM material_types t "
+                  "JOIN material_categories c "
+                  "ON t.category_id = c.id "
+                  "WHERE c.name = ?");
     query.addBindValue(categoryName);
     query.exec();
 }
 
 void selectMaterialsByType(QSqlQuery &query, const QString &typeName)
 {
-    query.prepare("SELECT m.name, "
+    query.prepare("SELECT "
+                  "m.name, "
                   "m.measure, "
                   "m.cost_price, "
                   "m.min_amount, "
@@ -44,6 +45,37 @@ void selectMaterialsByType(QSqlQuery &query, const QString &typeName)
                   "WHERE t.name = ?;");
     query.addBindValue(typeName);
     query.exec();
+}
+
+void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName)
+{
+    query.prepare("SELECT "
+                  "m.name, "
+                  "m.measure, "
+                  "m.cost_price, "
+                  "m.min_amount, "
+                  "m.weight, "
+                  "m.waste_rate "
+                  "FROM materials m "
+                  "JOIN material_types t "
+                  "ON m.type_id = t.id "
+                  "JOIN material_categories c "
+                  "ON t.category_id = c.id "
+                  "WHERE c.name = ?;");
+    query.addBindValue(categoryName);
+    query.exec();
+}
+
+void selectMaterialsByName(QSqlQuery &query, const QString &name)
+{
+    query.exec("SELECT "
+               "m.name, "
+               "m.measure, "
+               "m.cost_price, "
+               "m.min_amount, "
+               "m.weight, "
+               "m.waste_rate "
+               "FROM materials m;");
 }
 } // namespace CRUD
 

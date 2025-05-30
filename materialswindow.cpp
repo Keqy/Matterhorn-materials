@@ -105,13 +105,32 @@ void MaterialsWindow::parseSelectedMaterialData()
 
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
-    QString typeName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
 
-    CRUD::selectMaterialsByType(query, typeName);
+    QString itemName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
+    //TODO: Try to rethink this implementation.
+    if (isMaterialTypeSelected()) {
+        CRUD::selectMaterialsByType(query, itemName);
+    } else if (isMaterialCategorySelected()) {
+        CRUD::selectMaterialsByCategory(query, itemName);
+    } else if (isRootMaterialCategoriesItemSelected()) {
+        CRUD::selectMaterialsByName(query, "");
+    } else {
+        return;
+    }
     if (query.lastError().isValid()) {
         QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
         return;
     }
+
+    // TODO: USE polimorphism, remove the if - else block.
+
+    // QString typeName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
+
+    //CRUD::selectMaterialsByType(query, typeName);
+    // if (query.lastError().isValid()) {
+    //     QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+    //     return;
+    // }
     query.first(); // REFACTOR THIS...
     if (query.isValid())
     {
@@ -194,6 +213,18 @@ bool MaterialsWindow::isMaterialTypeSelected() const
 {
     QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
     return item && item->parent() && item->parent()->parent();
+}
+
+bool MaterialsWindow::isMaterialCategorySelected() const
+{
+    QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
+    return item && item->parent() && !(item->parent()->parent());
+}
+
+bool MaterialsWindow::isRootMaterialCategoriesItemSelected() const
+{
+    QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
+    return item && !(item->parent());
 }
 
 // void MaterialsWindow::closeEvent(QCloseEvent *event)
