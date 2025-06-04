@@ -43,7 +43,7 @@ private:
     inline void removeMaterialsTableWidgetRow();
     bool isMaterialTypeSelected() const;
     bool isMaterialCategorySelected() const;
-    bool isRootMaterialCategoriesItemSelected() const;
+    bool isMaterialRootSelected() const;
 
     // Database interactions.
     QSqlDatabase db;

@@ -20,8 +20,11 @@ public:
 
 private:
     Ui::EditMaterialsTreeWidgetDialog *ui;
-
+    void renameMaterialsTreeWidgetItem();
     void addCategory();
+    void addType();
+    bool isMaterialRootSelected();
+    bool isMaterialCategorySelected();
 };
 
 #endif // EDITMATERIALSTREEWIDGETDIALOG_H

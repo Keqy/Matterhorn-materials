@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     loginWindow = nullptr;
     eventLoop = nullptr;
 
-    // TODO: Fix process freezing on early exit without login.
+    // TODO: Fix process freezing on early exit without login. Refactor LoginWindow to LoginDialog.
 
     MainWindow mainWindow;
     mainWindow.show();

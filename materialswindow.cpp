@@ -114,7 +114,7 @@ void MaterialsWindow::parseSelectedMaterialData()
         CRUD::selectMaterialsByType(query, itemName);
     } else if (isMaterialCategorySelected()) {
         CRUD::selectMaterialsByCategory(query, itemName);
-    } else if (isRootMaterialCategoriesItemSelected()) {
+    } else if (isMaterialRootSelected()) {
         CRUD::selectMaterialsByName(query, "");
     } else {
         return;
@@ -222,7 +222,7 @@ bool MaterialsWindow::isMaterialCategorySelected() const
     return item && item->parent() && !(item->parent()->parent());
 }
 
-bool MaterialsWindow::isRootMaterialCategoriesItemSelected() const
+bool MaterialsWindow::isMaterialRootSelected() const
 {
     QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
     return item && !(item->parent());
