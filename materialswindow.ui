@@ -30,8 +30,8 @@
   </property>
   <property name="font">
    <font>
-    <family>Cambria</family>
-    <pointsize>10</pointsize>
+    <family>Segoe UI</family>
+    <pointsize>9</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -246,7 +246,7 @@
         <widget class="QLabel" name="label_2">
          <property name="font">
           <font>
-           <family>Cambria</family>
+           <family>Segoe UI</family>
            <pointsize>11</pointsize>
           </font>
          </property>

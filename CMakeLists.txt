@@ -29,6 +29,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         materialswindow.h materialswindow.cpp materialswindow.ui
 
         databasemanager.h databasemanager.cpp
+        editmaterialstreewidgetdialog.h editmaterialstreewidgetdialog.cpp editmaterialstreewidgetdialog.ui
+
 
 
 

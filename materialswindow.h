@@ -51,10 +51,8 @@ private:
 
     QList<QTreeWidgetItem *> getMaterialCategories();
 
-    // Counter.
-    void zeroChangeCounter();
-    void incrementChangeCounter();
-    int getChangeCounter();
+    // Dialog.
+    void openEditMaterialsTreeWidgetDialog();
 };
 
 #endif // MATERIALSWINDOW_H

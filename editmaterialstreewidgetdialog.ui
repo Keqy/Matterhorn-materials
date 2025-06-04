@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditMaterialsTreeWidgetDialog</class>
+ <widget class="QDialog" name="EditMaterialsTreeWidgetDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>494</width>
+    <height>572</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Редактирование древа материалов</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
+  </property>
+  <widget class="QPushButton" name="addCategoryButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>40</y>
+     <width>221</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить категорию</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="removeCategoryButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>80</y>
+     <width>221</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Удалить категорию</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="renameItemButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>270</y>
+     <width>221</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Переименовать объект</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addTypeButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>150</y>
+     <width>221</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить подкатегорию</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="removeTypeButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>190</y>
+     <width>221</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Удалить подкатегорию</string>
+   </property>
+  </widget>
+  <widget class="QTreeView" name="treeView">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>230</width>
+     <height>502</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

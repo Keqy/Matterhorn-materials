@@ -1,6 +1,7 @@
 #include "materialswindow.h"
 #include "databasemanager.h"
 #include "ui_materialswindow.h"
+#include "editmaterialstreewidgetdialog.h"
 
 #include <QMessageBox>
 #include <QSqlError>
@@ -14,6 +15,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     QObject::connect(ui->materialsTableWidgetAccessButton, &QPushButton::clicked, this, &MaterialsWindow::changeMaterialsTableWidgetAccess);
     QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::addMaterialsTableWidgetRow);
     QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
+    QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::openEditMaterialsTreeWidgetDialog);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -122,15 +124,6 @@ void MaterialsWindow::parseSelectedMaterialData()
         return;
     }
 
-    // TODO: USE polimorphism, remove the if - else block.
-
-    // QString typeName = ui->materialsTreeWidget->selectedItems()[0]->text(0);
-
-    //CRUD::selectMaterialsByType(query, typeName);
-    // if (query.lastError().isValid()) {
-    //     QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
-    //     return;
-    // }
     query.first(); // REFACTOR THIS...
     if (query.isValid())
     {
@@ -165,6 +158,14 @@ inline void MaterialsWindow::removeMaterialsTableWidgetRow()
         int currentRow = ui->materialsTableWidget->currentRow();
         ui->materialsTableWidget->removeRow(currentRow);
     }
+}
+
+void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
+{
+    EditMaterialsTreeWidgetDialog editMaterialsTreeWidgetDialog;
+    editMaterialsTreeWidgetDialog.setMaterialsTreeView(ui->materialsTreeWidget->model());
+    editMaterialsTreeWidgetDialog.exec();
+    updateMaterialsTreeWidget();
 }
 
 // --- UI
