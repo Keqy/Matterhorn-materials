@@ -1,6 +1,8 @@
 #ifndef EDITMATERIALSTREEWIDGETDIALOG_H
 #define EDITMATERIALSTREEWIDGETDIALOG_H
 
+#include "treechangetracker.h"
+
 #include <QDialog>
 #include <QTreeWidget>
 
@@ -18,6 +20,8 @@ public:
 
     void setMaterialsTreeView(QAbstractItemModel *model);
 
+    const QList<TreeChange>& getChanges() const { return changeTracker->getChanges(); };
+
 private:
     Ui::EditMaterialsTreeWidgetDialog *ui;
     void renameMaterialsTreeWidgetItem();
@@ -25,6 +29,8 @@ private:
     void addType();
     bool isMaterialRootSelected();
     bool isMaterialCategorySelected();
+
+    TreeChangeTracker *changeTracker;
 };
 
 #endif // EDITMATERIALSTREEWIDGETDIALOG_H

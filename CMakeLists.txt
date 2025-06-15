@@ -31,6 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         databasemanager.h databasemanager.cpp
         editmaterialstreewidgetdialog.h editmaterialstreewidgetdialog.cpp editmaterialstreewidgetdialog.ui
         renamenewmaterialstreewidgetitemdialog.h renamenewmaterialstreewidgetitemdialog.cpp renamenewmaterialstreewidgetitemdialog.ui
+        treechangetracker.h treechangetracker.cpp
 
 
 

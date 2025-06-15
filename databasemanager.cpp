@@ -77,6 +77,13 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name)
                "m.waste_rate "
                "FROM materials m;");
 }
+
+void insertCategory(QSqlQuery &query, const TreeChange &category)
+{
+    query.prepare("INSERT INTO material_categories(name) VALUES (?)");
+    query.addBindValue(category.name);
+    query.exec();
+}
 } // namespace CRUD
 
 DatabaseManager::DatabaseManager() {}

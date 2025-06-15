@@ -10,6 +10,10 @@ EditMaterialsTreeWidgetDialog::EditMaterialsTreeWidgetDialog(QWidget *parent)
     QObject::connect(ui->addCategoryButton, &QPushButton::clicked, this, &EditMaterialsTreeWidgetDialog::addCategory);
     QObject::connect(ui->addTypeButton, &QPushButton::clicked, this, &EditMaterialsTreeWidgetDialog::addType);
     QObject::connect(ui->renameItemButton, &QPushButton::clicked, this, &EditMaterialsTreeWidgetDialog::renameMaterialsTreeWidgetItem);
+    QObject::connect(ui->saveButton, &QPushButton::clicked, this, &EditMaterialsTreeWidgetDialog::accept);
+    QObject::connect(ui->cancelButton, &QPushButton::clicked, this, &EditMaterialsTreeWidgetDialog::reject);
+
+    changeTracker = new TreeChangeTracker(this);
 }
 
 EditMaterialsTreeWidgetDialog::~EditMaterialsTreeWidgetDialog()
@@ -19,21 +23,28 @@ EditMaterialsTreeWidgetDialog::~EditMaterialsTreeWidgetDialog()
 
 void EditMaterialsTreeWidgetDialog::addCategory()
 {
-    if (isMaterialRootSelected()) {
-        QModelIndex parentIndex = ui->materialsTreeView->currentIndex();
-        ui->materialsTreeView->expand(parentIndex);
-        ui->materialsTreeView->model()->insertRow(0, parentIndex);
-
-        QModelIndex newIndex = ui->materialsTreeView->model()->index(0, 0, parentIndex);
-        ui->materialsTreeView->model()->setData(newIndex, "Новая категория");
-        if (parentIndex.data().toString() == "Все материалы") {
-            ui->materialsTreeView->model()->setData(newIndex, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen), Qt::DecorationRole);
-        } else if (parentIndex.data().toString() == "Все работы") {
-            ui->materialsTreeView->model()->setData(newIndex, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties), Qt::DecorationRole);
-        }
-        ui->materialsTreeView->setCurrentIndex(newIndex);
-        ui->materialsTreeView->scrollTo(newIndex);
+    if (!isMaterialRootSelected()) {
+        return;
     }
+
+    QModelIndex parentIndex = ui->materialsTreeView->currentIndex();
+    ui->materialsTreeView->expand(parentIndex);
+    ui->materialsTreeView->model()->insertRow(0, parentIndex);
+
+    QModelIndex newIndex = ui->materialsTreeView->model()->index(0, 0, parentIndex);
+    ui->materialsTreeView->model()->setData(newIndex, "Новая категория");
+    if (parentIndex.data().toString() == "Все материалы") {
+        ui->materialsTreeView->model()->setData(newIndex, QIcon::fromTheme(QIcon::ThemeIcon::FolderOpen), Qt::DecorationRole);
+    } else if (parentIndex.data().toString() == "Все работы") {
+        ui->materialsTreeView->model()->setData(newIndex, QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties), Qt::DecorationRole);
+    }
+    ui->materialsTreeView->setCurrentIndex(newIndex);
+    ui->materialsTreeView->scrollTo(newIndex);
+    renameMaterialsTreeWidgetItem();
+
+    QString parentName = ui->materialsTreeView->model()->data(parentIndex).toString();
+    QString itemName = ui->materialsTreeView->model()->data(newIndex).toString();
+    changeTracker->addInsert(itemName, parentName, ItemType::Category);
 }
 
 void EditMaterialsTreeWidgetDialog::addType()

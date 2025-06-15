@@ -1,4 +1,4 @@
-#include "materialswindow.h"
+ #include "materialswindow.h"
 #include "databasemanager.h"
 #include "ui_materialswindow.h"
 #include "editmaterialstreewidgetdialog.h"
@@ -164,7 +164,26 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
 {
     EditMaterialsTreeWidgetDialog editMaterialsTreeWidgetDialog;
     editMaterialsTreeWidgetDialog.setMaterialsTreeView(ui->materialsTreeWidget->model());
-    editMaterialsTreeWidgetDialog.exec();
+    if (editMaterialsTreeWidgetDialog.exec()) {
+        QSqlDatabase db = QSqlDatabase::database("materials_connection");
+        QSqlQuery query(db);
+        QList<TreeChange> changes = editMaterialsTreeWidgetDialog.getChanges();
+        if (!db.transaction()) {
+            QMessageBox::critical(this, "Не удалось начать транзакцию в базу данных", db.lastError().text());
+        } for (const TreeChange &change : changes) {
+            if (change.changeType == ChangeType::Insert) {
+                CRUD::insertCategory(query, change);
+                if (query.lastError().isValid()) {
+                    QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+                    db.rollback();
+                    break;
+                }
+            }
+        }
+        if (!db.commit()) {
+            QMessageBox::critical(this, "Не удалось завершить транзакцию в базу данных", db.lastError().text());
+        }
+    }
     updateMaterialsTreeWidget();
 }
 
