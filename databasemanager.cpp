@@ -80,8 +80,42 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name)
 
 void insertCategory(QSqlQuery &query, const TreeChange &category)
 {
-    query.prepare("INSERT INTO material_categories(name) VALUES (?)");
+    query.prepare("INSERT INTO "
+                  "material_categories(name) "
+                  "VALUES (?);");
     query.addBindValue(category.name);
+    query.exec();
+}
+
+void insertType(QSqlQuery &query, const TreeChange &type)
+{
+    query.prepare("INSERT INTO "
+                  "material_types(category_id, name) "
+                  "VALUES("
+                  "(SELECT id FROM material_categories WHERE name = ?), "
+                  "?);");
+    query.addBindValue(type.parentName);
+    query.addBindValue(type.name);
+    query.exec();
+}
+
+void deleteCategory(QSqlQuery &query, const TreeChange &category)
+{
+    query.prepare("DELETE FROM "
+                  "material_categories "
+                  "WHERE "
+                  "name = ?;");
+    query.addBindValue(category.name);
+    query.exec();
+}
+
+void deleteType(QSqlQuery &query, const TreeChange &type)
+{
+    query.prepare("DELETE FROM "
+                  "material_types "
+                  "WHERE "
+                  "name = ?;");
+    query.addBindValue(type.name);
     query.exec();
 }
 } // namespace CRUD

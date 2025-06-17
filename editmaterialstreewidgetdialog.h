@@ -27,8 +27,12 @@ private:
     void renameMaterialsTreeWidgetItem();
     void addCategory();
     void addType();
+    void removeCategory();
+    void removeType();
+
     bool isMaterialRootSelected();
     bool isMaterialCategorySelected();
+    bool isMaterialTypeSelected();
 
     TreeChangeTracker *changeTracker;
 };

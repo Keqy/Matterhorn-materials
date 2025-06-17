@@ -35,5 +35,9 @@ void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName);
 void selectMaterialsByName(QSqlQuery &query, const QString &name);
 
 void insertCategory(QSqlQuery &query, const TreeChange &category);
+void insertType(QSqlQuery &query, const TreeChange &type);
+
+void deleteCategory(QSqlQuery &query, const TreeChange &category);
+void deleteType(QSqlQuery &query, const TreeChange &type);
 }
 #endif // DATABASEMANAGER_H

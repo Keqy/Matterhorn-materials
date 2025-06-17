@@ -164,14 +164,29 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
 {
     EditMaterialsTreeWidgetDialog editMaterialsTreeWidgetDialog;
     editMaterialsTreeWidgetDialog.setMaterialsTreeView(ui->materialsTreeWidget->model());
-    if (editMaterialsTreeWidgetDialog.exec()) {
-        QSqlDatabase db = QSqlDatabase::database("materials_connection");
-        QSqlQuery query(db);
-        QList<TreeChange> changes = editMaterialsTreeWidgetDialog.getChanges();
-        if (!db.transaction()) {
-            QMessageBox::critical(this, "Не удалось начать транзакцию в базу данных", db.lastError().text());
-        } for (const TreeChange &change : changes) {
-            if (change.changeType == ChangeType::Insert) {
+    if (!editMaterialsTreeWidgetDialog.exec()) {
+        return;
+    }
+
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    if (!db.transaction()) {
+        QMessageBox::critical(this, "Не удалось начать транзакцию в базу данных", db.lastError().text());
+        return;
+    }
+
+    QList<TreeChange> changes = editMaterialsTreeWidgetDialog.getChanges();
+    for (auto it = changes.begin(); it != changes.end(); ) {
+        TreeChange change = *it;
+        if (change.itemType == ItemType::Category) {
+            if (change.changeType == ChangeType::Delete) {
+                CRUD::deleteCategory(query, change);
+                if (query.lastError().isValid()) {
+                    QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+                    db.rollback();
+                    break;
+                }
+            } else if (change.changeType == ChangeType::Insert) {
                 CRUD::insertCategory(query, change);
                 if (query.lastError().isValid()) {
                     QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
@@ -179,10 +194,37 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
                     break;
                 }
             }
+            it = changes.erase(it);
+        } else {
+            ++it;
         }
-        if (!db.commit()) {
-            QMessageBox::critical(this, "Не удалось завершить транзакцию в базу данных", db.lastError().text());
+    }
+
+    for (auto it = changes.begin(); it != changes.end(); ) {
+        TreeChange change = *it;
+        if (change.itemType == ItemType::Type) {
+            if (change.changeType == ChangeType::Delete) {
+                CRUD::deleteType(query, change);
+                if (query.lastError().isValid()) {
+                    QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+                    db.rollback();
+                    break;
+                }
+            } else if (change.changeType == ChangeType::Insert) {
+                CRUD::insertType(query, change);
+                if (query.lastError().isValid()) {
+                    QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+                    db.rollback();
+                    break;
+                }
+            }
+            it = changes.erase(it);
+        } else {
+            ++it;
         }
+    }
+    if (!db.commit()) {
+        QMessageBox::critical(this, "Не удалось завершить транзакцию в базу данных", db.lastError().text());
     }
     updateMaterialsTreeWidget();
 }
