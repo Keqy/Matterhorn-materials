@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>494</width>
-    <height>591</height>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Редактирование древа материалов</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
   </property>
   <widget class="QPushButton" name="addCategoryButton">
@@ -107,7 +107,7 @@
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>270</x>
      <y>550</y>
      <width>101</width>
      <height>24</height>
@@ -120,9 +120,9 @@
   <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>380</x>
      <y>550</y>
-     <width>111</width>
+     <width>101</width>
      <height>24</height>
     </rect>
    </property>
@@ -132,7 +132,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

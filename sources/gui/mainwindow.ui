@@ -19,7 +19,7 @@
    <string>Маттерхорн</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
   </property>
   <property name="dockOptions">
@@ -45,7 +45,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

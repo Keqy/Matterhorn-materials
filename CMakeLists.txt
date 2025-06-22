@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Matterhorn-materials VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC OFF)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC_SEARCH_PATHS sources/gui)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -32,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sources/include/editmaterialstreewidgetdialog.h sources/editmaterialstreewidgetdialog.cpp sources/gui/editmaterialstreewidgetdialog.ui
         sources/include/renamenewmaterialstreewidgetitemdialog.h sources/renamenewmaterialstreewidgetitemdialog.cpp sources/gui/renamenewmaterialstreewidgetitemdialog.ui
         sources/include/treechangetracker.h sources/treechangetracker.cpp
+        sources/include/addmaterialdialog.h sources/addmaterialdialog.cpp sources/gui/addmaterialdialog.ui
 
 
 

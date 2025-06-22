@@ -2,6 +2,7 @@
 #include "include/databasemanager.h"
 #include "ui_materialswindow.h"
 #include "include/editmaterialstreewidgetdialog.h"
+#include "include/addmaterialdialog.h"
 
 #include <QMessageBox>
 #include <QSqlError>
@@ -13,7 +14,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     ui->setupUi(this);
     QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedMaterialData);
     QObject::connect(ui->materialsTableWidgetAccessButton, &QPushButton::clicked, this, &MaterialsWindow::changeMaterialsTableWidgetAccess);
-    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::addMaterialsTableWidgetRow);
+    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::openAddMaterialDialog);
     QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
     QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::openEditMaterialsTreeWidgetDialog);
 
@@ -144,14 +145,6 @@ inline void MaterialsWindow::changeMaterialsTableWidgetAccess()
     setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
 }
 
-inline void MaterialsWindow::addMaterialsTableWidgetRow()
-{
-    if (!isMaterialsTableWidgetLocked) {
-        int rowCount = ui->materialsTableWidget->rowCount();
-        ui->materialsTableWidget->setRowCount(rowCount + 1);
-    }
-}
-
 inline void MaterialsWindow::removeMaterialsTableWidgetRow()
 {
     if (!isMaterialsTableWidgetLocked) {
@@ -174,7 +167,7 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
         QMessageBox::critical(this, "Не удалось начать транзакцию в базу данных", db.lastError().text());
         return;
     }
-
+    // TODO: Refactor change hierarchy. Maybe move it to the function.
     QList<TreeChange> changes = editMaterialsTreeWidgetDialog.getChanges();
     for (auto it = changes.begin(); it != changes.end(); ) {
         TreeChange change = *it;
@@ -227,6 +220,19 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
         QMessageBox::critical(this, "Не удалось завершить транзакцию в базу данных", db.lastError().text());
     }
     updateMaterialsTreeWidget();
+}
+
+void MaterialsWindow::openAddMaterialDialog()
+{
+    AddMaterialDialog addMaterialDialog;
+    if (!addMaterialDialog.exec()) {
+        return;
+    }
+    // TODO: Remove the TableWidget lock system.
+    if (!isMaterialsTableWidgetLocked) {
+        int rowCount = ui->materialsTableWidget->rowCount();
+        ui->materialsTableWidget->setRowCount(rowCount + 1);
+    }
 }
 
 // --- UI

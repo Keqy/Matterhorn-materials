@@ -39,7 +39,6 @@ private:
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
     void changeMaterialsTableWidgetAccess();
-    inline void addMaterialsTableWidgetRow();
     inline void removeMaterialsTableWidgetRow();
     bool isMaterialTypeSelected() const;
     bool isMaterialCategorySelected() const;
@@ -53,6 +52,7 @@ private:
 
     // Dialog.
     void openEditMaterialsTreeWidgetDialog();
+    void openAddMaterialDialog();
 };
 
 #endif // MATERIALSWINDOW_H
