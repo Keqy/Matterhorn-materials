@@ -1,4 +1,4 @@
-#include "renamenewmaterialstreewidgetitemdialog.h"
+#include "include/renamenewmaterialstreewidgetitemdialog.h"
 #include "ui_renamenewmaterialstreewidgetitemdialog.h"
 
 RenameNewMaterialsTreeWidgetItemDialog::RenameNewMaterialsTreeWidgetItemDialog(QWidget *parent)

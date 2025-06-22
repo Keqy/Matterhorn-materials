@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Matterhorn-materials VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC OFF)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -14,24 +14,24 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Sql)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        sources/main.cpp
+        sources/mainwindow.cpp
+        sources/include/mainwindow.h
+        sources/gui/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Matterhorn-materials
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        loginwindow.h loginwindow.cpp loginwindow.ui
-        resources.qrc
-        materialswindow.h materialswindow.cpp materialswindow.ui
+        sources/include/loginwindow.h sources/loginwindow.cpp sources/gui/loginwindow.ui
+        resources/resources.qrc
+        sources/include/materialswindow.h sources/materialswindow.cpp sources/gui/materialswindow.ui
 
-        databasemanager.h databasemanager.cpp
-        editmaterialstreewidgetdialog.h editmaterialstreewidgetdialog.cpp editmaterialstreewidgetdialog.ui
-        renamenewmaterialstreewidgetitemdialog.h renamenewmaterialstreewidgetitemdialog.cpp renamenewmaterialstreewidgetitemdialog.ui
-        treechangetracker.h treechangetracker.cpp
+        sources/include/databasemanager.h sources/databasemanager.cpp
+        sources/include/editmaterialstreewidgetdialog.h sources/editmaterialstreewidgetdialog.cpp sources/gui/editmaterialstreewidgetdialog.ui
+        sources/include/renamenewmaterialstreewidgetitemdialog.h sources/renamenewmaterialstreewidgetitemdialog.cpp sources/gui/renamenewmaterialstreewidgetitemdialog.ui
+        sources/include/treechangetracker.h sources/treechangetracker.cpp
 
 
 

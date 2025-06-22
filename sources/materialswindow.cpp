@@ -1,7 +1,7 @@
- #include "materialswindow.h"
-#include "databasemanager.h"
+#include "include/materialswindow.h"
+#include "include/databasemanager.h"
 #include "ui_materialswindow.h"
-#include "editmaterialstreewidgetdialog.h"
+#include "include/editmaterialstreewidgetdialog.h"
 
 #include <QMessageBox>
 #include <QSqlError>

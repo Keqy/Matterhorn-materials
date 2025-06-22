@@ -1,4 +1,4 @@
-#include "treechangetracker.h"
+#include "include/treechangetracker.h"
 
 TreeChangeTracker::TreeChangeTracker(QObject *parent) : QObject(parent) {}
 

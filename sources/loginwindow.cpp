@@ -1,5 +1,5 @@
-#include "loginwindow.h"
-#include "databasemanager.h"
+#include "include/loginwindow.h"
+#include "include/databasemanager.h"
 #include "ui_loginwindow.h"
 
 #include <QMessageBox>

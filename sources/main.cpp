@@ -1,5 +1,5 @@
-#include "loginwindow.h"
-#include "mainwindow.h"
+#include "include/loginwindow.h"
+#include "include/mainwindow.h"
 
 #include <QApplication>
 #include <QEventLoop>

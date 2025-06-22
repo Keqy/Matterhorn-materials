@@ -1,6 +1,6 @@
-#include "editmaterialstreewidgetdialog.h"
+#include "include/editmaterialstreewidgetdialog.h"
 #include "ui_editmaterialstreewidgetdialog.h"
-#include "renamenewmaterialstreewidgetitemdialog.h"
+#include "include/renamenewmaterialstreewidgetitemdialog.h"
 
 EditMaterialsTreeWidgetDialog::EditMaterialsTreeWidgetDialog(QWidget *parent)
     : QDialog(parent)
