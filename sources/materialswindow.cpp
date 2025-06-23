@@ -13,7 +13,6 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedMaterialData);
-    QObject::connect(ui->materialsTableWidgetAccessButton, &QPushButton::clicked, this, &MaterialsWindow::changeMaterialsTableWidgetAccess);
     QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::openAddMaterialDialog);
     QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
     QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::openEditMaterialsTreeWidgetDialog);
@@ -102,7 +101,6 @@ void MaterialsWindow::parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWid
 // --- Signals
 void MaterialsWindow::parseSelectedMaterialData()
 {
-    setMaterialsTableWidgetLock(true);
     ui->materialsTableWidget->clearContents();
     ui->materialsTableWidget->setRowCount(0);
 
@@ -140,17 +138,10 @@ void MaterialsWindow::parseSelectedMaterialData()
     }
 }
 
-inline void MaterialsWindow::changeMaterialsTableWidgetAccess()
-{
-    setMaterialsTableWidgetLock(!isMaterialsTableWidgetLocked);
-}
-
 inline void MaterialsWindow::removeMaterialsTableWidgetRow()
 {
-    if (!isMaterialsTableWidgetLocked) {
-        int currentRow = ui->materialsTableWidget->currentRow();
-        ui->materialsTableWidget->removeRow(currentRow);
-    }
+    int currentRow = ui->materialsTableWidget->currentRow();
+    ui->materialsTableWidget->removeRow(currentRow);
 }
 
 void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
@@ -224,15 +215,19 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
 
 void MaterialsWindow::openAddMaterialDialog()
 {
+    if (!isMaterialTypeSelected()) {
+        QMessageBox::critical(this,
+                              "Невозможно добавить материал",
+                              "Необходимо выбрать подкатегорию, в которую будет добавляться материал");
+        return;
+    }
     AddMaterialDialog addMaterialDialog;
     if (!addMaterialDialog.exec()) {
         return;
     }
-    // TODO: Remove the TableWidget lock system.
-    if (!isMaterialsTableWidgetLocked) {
-        int rowCount = ui->materialsTableWidget->rowCount();
-        ui->materialsTableWidget->setRowCount(rowCount + 1);
-    }
+
+    int rowCount = ui->materialsTableWidget->rowCount();
+    ui->materialsTableWidget->setRowCount(rowCount + 1);
 }
 
 // --- UI
@@ -259,22 +254,6 @@ inline void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
 {
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, 243);
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, 243);
-}
-
-void MaterialsWindow::setMaterialsTableWidgetLock(const bool &lock)
-{
-    if (lock) {
-        ui->materialsTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        ui->materialsTableWidgetAccessButton->setText("Разблокировать");
-        isMaterialsTableWidgetLocked = true;
-    } else {
-        // Unlock.
-        if (isMaterialTypeSelected()) {
-            ui->materialsTableWidget->setEditTriggers(QAbstractItemView::CurrentChanged);
-            ui->materialsTableWidgetAccessButton->setText("Заблокировать");
-            isMaterialsTableWidgetLocked = false;
-        }
-    }
 }
 
 bool MaterialsWindow::isMaterialTypeSelected() const

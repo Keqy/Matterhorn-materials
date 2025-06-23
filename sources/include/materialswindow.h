@@ -28,17 +28,14 @@ protected:
 private:
     // UI.
     Ui::MaterialsWindow *ui;
-    bool isMaterialsTableWidgetLocked = true;
 
     inline void setMaterialsTableColumnWidth();
     inline void setMaterialsExtraOptionsTableColumnWidth();
     inline void setMaterialWorkAppropriatenessTableColumnWidth();
-    void setMaterialsTableWidgetLock(const bool &option);
     void updateMaterialsTreeWidget();
     void parseSelectedMaterialData();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
-    void changeMaterialsTableWidgetAccess();
     inline void removeMaterialsTableWidgetRow();
     bool isMaterialTypeSelected() const;
     bool isMaterialCategorySelected() const;

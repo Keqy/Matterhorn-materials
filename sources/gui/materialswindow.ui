@@ -123,13 +123,6 @@
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QPushButton" name="materialsTableWidgetAccessButton">
-       <property name="text">
-        <string>Разблокировать</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item row="1" column="0" colspan="4">
