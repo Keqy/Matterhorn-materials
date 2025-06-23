@@ -221,6 +221,7 @@ void MaterialsWindow::openAddMaterialDialog()
                               "Необходимо выбрать подкатегорию, в которую будет добавляться материал");
         return;
     }
+
     AddMaterialDialog addMaterialDialog;
     if (!addMaterialDialog.exec()) {
         return;

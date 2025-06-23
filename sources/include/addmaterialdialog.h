@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::AddMaterialDialog *ui;
+
+    void saveAndExit();
+    bool isAllLinesFilled();
 };
 
 #endif // ADDMATERIALDIALOG_H

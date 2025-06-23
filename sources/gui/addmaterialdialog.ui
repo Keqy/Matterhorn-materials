@@ -17,7 +17,7 @@
    <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/logo/images/icon.ico</normaloff>:/images/logo/images/icon.ico</iconset>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="nameLine">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -27,7 +27,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="measureLine">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -37,7 +37,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="costPriceLine">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -47,7 +47,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
+  <widget class="QLineEdit" name="minAmountLine">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -57,7 +57,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
+  <widget class="QLineEdit" name="weightLine">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -67,7 +67,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_6">
+  <widget class="QLineEdit" name="wasteRateLine">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -155,7 +155,7 @@
     <string>Коэф. отходов</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -168,7 +168,7 @@
     <string>Сохранить</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -179,6 +179,22 @@
    </property>
    <property name="text">
     <string>Отмена</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="errorLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>184</y>
+     <width>211</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
