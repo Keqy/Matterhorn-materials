@@ -1,5 +1,6 @@
 #include "include/addmaterialdialog.h"
 #include "ui_addmaterialdialog.h"
+#include "include/material.h"
 
 AddMaterialDialog::AddMaterialDialog(QWidget *parent)
     : QDialog(parent)
@@ -16,22 +17,21 @@ AddMaterialDialog::~AddMaterialDialog()
 
 void AddMaterialDialog::saveAndExit()
 {
-    if (isAllLinesFilled()) {
+    material.name = ui->nameLine->text();
+    material.measure = ui->measureLine->text();
+    material.costPrice = ui->costPriceLine->text();
+    material.minAmount = ui->minAmountLine->text();
+    material.weight = ui->weightLine->text();
+    material.wasteRate = ui->wasteRateLine->text();
+
+    if (material.isFilled()) {
         QDialog::accept();
     } else {
         ui->errorLabel->setText("Необходимо заполнить все поля");
     }
 }
 
-bool AddMaterialDialog::isAllLinesFilled()
+Material AddMaterialDialog::getMaterial() const
 {
-    if (ui->nameLine->text().isEmpty() ||
-        ui->measureLine->text().isEmpty() ||
-        ui->costPriceLine->text().isEmpty() ||
-        ui->minAmountLine->text().isEmpty() ||
-        ui->weightLine->text().isEmpty() ||
-        ui->wasteRateLine->text().isEmpty()) {
-        return false;
-    }
-    return true;
+    return material;
 }

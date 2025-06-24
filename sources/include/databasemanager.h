@@ -1,10 +1,11 @@
-#include <QString>
-#include <QSqlQuery>
-
-#include "treechangetracker.h"
-
 #ifndef DATABASEMANAGER_H
 #define DATABASEMANAGER_H
+
+#include "treechangetracker.h"
+#include "material.h"
+
+#include <QString>
+#include <QSqlQuery>
 
 class DatabaseManager
 {
@@ -36,6 +37,7 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name);
 
 void insertCategory(QSqlQuery &query, const TreeChange &category);
 void insertType(QSqlQuery &query, const TreeChange &type);
+void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &material);
 
 void deleteCategory(QSqlQuery &query, const TreeChange &category);
 void deleteType(QSqlQuery &query, const TreeChange &type);

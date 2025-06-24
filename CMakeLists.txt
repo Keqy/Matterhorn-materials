@@ -34,6 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sources/include/renamenewmaterialstreewidgetitemdialog.h sources/renamenewmaterialstreewidgetitemdialog.cpp sources/gui/renamenewmaterialstreewidgetitemdialog.ui
         sources/include/treechangetracker.h sources/treechangetracker.cpp
         sources/include/addmaterialdialog.h sources/addmaterialdialog.cpp sources/gui/addmaterialdialog.ui
+        sources/include/material.h
 
 
 

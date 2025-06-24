@@ -1,6 +1,8 @@
 #ifndef ADDMATERIALDIALOG_H
 #define ADDMATERIALDIALOG_H
 
+#include "material.h"
+
 #include <QDialog>
 
 namespace Ui {
@@ -15,11 +17,14 @@ public:
     explicit AddMaterialDialog(QWidget *parent = nullptr);
     ~AddMaterialDialog();
 
+    Material getMaterial() const;
+
 private:
     Ui::AddMaterialDialog *ui;
 
+    Material material;
+
     void saveAndExit();
-    bool isAllLinesFilled();
 };
 
 #endif // ADDMATERIALDIALOG_H

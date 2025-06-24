@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 namespace CRUD {
+// --SELECT.
 void selectMaterialCategories(QSqlQuery &query)
 {
     query.exec("SELECT name "
@@ -78,6 +79,7 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name)
                "FROM materials m;");
 }
 
+// --INSERT.
 void insertCategory(QSqlQuery &query, const TreeChange &category)
 {
     query.prepare("INSERT INTO "
@@ -99,6 +101,31 @@ void insertType(QSqlQuery &query, const TreeChange &type)
     query.exec();
 }
 
+void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &material)
+{
+    query.prepare("INSERT INTO "
+                  "materials("
+                    "type_id, "
+                    "name, "
+                    "measure, "
+                    "cost_price, "
+                    "min_amount, "
+                    "weight, "
+                    "waste_rate) "
+                  "VALUES("
+                    "(SELECT id FROM material_types WHERE name = ?), "
+                    "?, ?, ?, ?, ?, ?)");
+    query.addBindValue(typeName);
+    query.addBindValue(material.name);
+    query.addBindValue(material.measure);
+    query.addBindValue(material.costPrice);
+    query.addBindValue(material.minAmount);
+    query.addBindValue(material.weight);
+    query.addBindValue(material.wasteRate);
+    query.exec();
+}
+
+// --DELETE.
 void deleteCategory(QSqlQuery &query, const TreeChange &category)
 {
     query.prepare("DELETE FROM "

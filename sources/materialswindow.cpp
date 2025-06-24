@@ -12,10 +12,10 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     , ui(new Ui::MaterialsWindow)
 {
     ui->setupUi(this);
-    QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedMaterialData);
-    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::openAddMaterialDialog);
+    QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedTypeMaterials);
+    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::execAddMaterialDialog);
     QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
-    QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::openEditMaterialsTreeWidgetDialog);
+    QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::execEditMaterialsTreeWidgetDialog);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -99,7 +99,7 @@ void MaterialsWindow::parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWid
 }
 
 // --- Signals
-void MaterialsWindow::parseSelectedMaterialData()
+void MaterialsWindow::parseSelectedTypeMaterials()
 {
     ui->materialsTableWidget->clearContents();
     ui->materialsTableWidget->setRowCount(0);
@@ -144,7 +144,7 @@ inline void MaterialsWindow::removeMaterialsTableWidgetRow()
     ui->materialsTableWidget->removeRow(currentRow);
 }
 
-void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
+void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
 {
     EditMaterialsTreeWidgetDialog editMaterialsTreeWidgetDialog;
     editMaterialsTreeWidgetDialog.setMaterialsTreeView(ui->materialsTreeWidget->model());
@@ -213,7 +213,7 @@ void MaterialsWindow::openEditMaterialsTreeWidgetDialog()
     updateMaterialsTreeWidget();
 }
 
-void MaterialsWindow::openAddMaterialDialog()
+void MaterialsWindow::execAddMaterialDialog()
 {
     if (!isMaterialTypeSelected()) {
         QMessageBox::critical(this,
@@ -227,8 +227,17 @@ void MaterialsWindow::openAddMaterialDialog()
         return;
     }
 
-    int rowCount = ui->materialsTableWidget->rowCount();
-    ui->materialsTableWidget->setRowCount(rowCount + 1);
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    Material newMaterial = addMaterialDialog.getMaterial();
+    QString typeName = ui->materialsTreeWidget->currentItem()->text(0);
+
+    CRUD::insertMaterial(query, typeName, newMaterial);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+    parseSelectedTypeMaterials();
 }
 
 // --- UI
