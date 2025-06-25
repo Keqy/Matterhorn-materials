@@ -14,7 +14,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     ui->setupUi(this);
     QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedTypeMaterials);
     QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::execAddMaterialDialog);
-    QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterialsTableWidgetRow);
+    QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterial);
     QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::execEditMaterialsTreeWidgetDialog);
 
     QSqlDatabase db;
@@ -126,7 +126,6 @@ void MaterialsWindow::parseSelectedTypeMaterials()
     query.first(); // REFACTOR THIS...
     if (query.isValid())
     {
-        ui->materialsTableWidget->setEnabled(true);
         ui->materialsTableWidget->setRowCount(query.size());
         int row = 0;
         do { // AND THIS.
@@ -138,10 +137,37 @@ void MaterialsWindow::parseSelectedTypeMaterials()
     }
 }
 
-inline void MaterialsWindow::removeMaterialsTableWidgetRow()
+void MaterialsWindow::removeMaterial()
 {
     int currentRow = ui->materialsTableWidget->currentRow();
-    ui->materialsTableWidget->removeRow(currentRow);
+    // If the row is not selected.
+    if (currentRow < 0) {
+        QMessageBox::information(this,
+                                 "Не выбран материал",
+                                 "Выберите материал для удаления");
+        return;
+    }
+
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+
+    int materialId = ui->materialsTableWidget->item(currentRow, 0)->text().toInt();
+
+    QMessageBox msg(this);
+    msg.setIcon(QMessageBox::Question);
+    msg.setWindowTitle("Удаление материала");
+    msg.setText("Вы уверены, что хотите удалить выделенный материал?");
+    msg.addButton(QMessageBox::Yes)->setText("Да");
+    msg.addButton(QMessageBox::No)->setText("Нет");
+    msg.setWindowIcon(QIcon(":/images/logo/images/icon.ico"));
+    if (msg.exec() == QMessageBox::Yes) {
+        CRUD::deleteMaterial(query, materialId);
+        if (query.lastError().isValid()) {
+            QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+            return;
+        }
+        ui->materialsTableWidget->removeRow(currentRow);
+    }
 }
 
 void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
@@ -216,9 +242,9 @@ void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
 void MaterialsWindow::execAddMaterialDialog()
 {
     if (!isMaterialTypeSelected()) {
-        QMessageBox::critical(this,
-                              "Невозможно добавить материал",
-                              "Необходимо выбрать подкатегорию, в которую будет добавляться материал");
+        QMessageBox::information(this,
+                                 "Невозможно добавить материал",
+                                 "Выберите подкатегорию, в которую будет добавляться материал");
         return;
     }
 
@@ -245,12 +271,13 @@ void MaterialsWindow::execAddMaterialDialog()
 // if the MaterialsWindow size is going change.
 inline void MaterialsWindow::setMaterialsTableColumnWidth()
 {
-    ui->materialsTableWidget->setColumnWidth(0, 350);
-    ui->materialsTableWidget->setColumnWidth(1, 100);
-    ui->materialsTableWidget->setColumnWidth(2, 170);
-    ui->materialsTableWidget->setColumnWidth(3, 130);
-    ui->materialsTableWidget->setColumnWidth(4, 110);
-    ui->materialsTableWidget->setColumnWidth(5, 100);
+    ui->materialsTableWidget->hideColumn(0);
+    ui->materialsTableWidget->setColumnWidth(1, 350);
+    ui->materialsTableWidget->setColumnWidth(2, 100);
+    ui->materialsTableWidget->setColumnWidth(3, 170);
+    ui->materialsTableWidget->setColumnWidth(4, 130);
+    ui->materialsTableWidget->setColumnWidth(5, 110);
+    ui->materialsTableWidget->setColumnWidth(6, 100);
 }
 
 inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()

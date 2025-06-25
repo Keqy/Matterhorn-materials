@@ -205,6 +205,11 @@
          </attribute>
          <column>
           <property name="text">
+           <string>№</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
            <string>Наименование</string>
           </property>
          </column>

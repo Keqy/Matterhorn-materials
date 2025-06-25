@@ -8,6 +8,7 @@ AddMaterialDialog::AddMaterialDialog(QWidget *parent)
 {
     ui->setupUi(this);
     QObject::connect(ui->saveButton, &QPushButton::clicked, this, &AddMaterialDialog::saveAndExit);
+    QObject::connect(ui->cancelButton, &QPushButton::clicked, this, &AddMaterialDialog::reject);
 }
 
 AddMaterialDialog::~AddMaterialDialog()

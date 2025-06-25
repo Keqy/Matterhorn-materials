@@ -36,7 +36,7 @@ private:
     void parseSelectedTypeMaterials();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
-    inline void removeMaterialsTableWidgetRow();
+    void removeMaterial();
     bool isMaterialTypeSelected() const;
     bool isMaterialCategorySelected() const;
     bool isMaterialRootSelected() const;

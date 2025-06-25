@@ -34,6 +34,7 @@ void selectMaterialTypesByCategory(QSqlQuery &query, QString categoryName)
 void selectMaterialsByType(QSqlQuery &query, const QString &typeName)
 {
     query.prepare("SELECT "
+                  "m.id, "
                   "m.name, "
                   "m.measure, "
                   "m.cost_price, "
@@ -51,6 +52,7 @@ void selectMaterialsByType(QSqlQuery &query, const QString &typeName)
 void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName)
 {
     query.prepare("SELECT "
+                  "m.id, "
                   "m.name, "
                   "m.measure, "
                   "m.cost_price, "
@@ -70,6 +72,7 @@ void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName)
 void selectMaterialsByName(QSqlQuery &query, const QString &name)
 {
     query.exec("SELECT "
+               "m.id, "
                "m.name, "
                "m.measure, "
                "m.cost_price, "
@@ -143,6 +146,13 @@ void deleteType(QSqlQuery &query, const TreeChange &type)
                   "WHERE "
                   "name = ?;");
     query.addBindValue(type.name);
+    query.exec();
+}
+
+void deleteMaterial(QSqlQuery &query, const int &id)
+{
+    query.prepare("DELETE FROM materials WHERE id = ?");
+    query.addBindValue(id);
     query.exec();
 }
 } // namespace CRUD
