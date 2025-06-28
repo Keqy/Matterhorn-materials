@@ -19,6 +19,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void showWithAccess(const int &access);
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -28,5 +30,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     MaterialsWindow *materialsWindow = nullptr;
+
+    enum AccessLevel {
+        FULL_ACCESS = 1,
+        STRICT_ACCESS = 2
+    };
 };
 #endif // MAINWINDOW_H

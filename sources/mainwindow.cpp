@@ -14,6 +14,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::showWithAccess(const int &access)
+{
+    switch (access) {
+    case AccessLevel::FULL_ACCESS:
+        ui->calculatorButton->setEnabled(true);
+        ui->materialsButton->setEnabled(true);
+        break;
+    case AccessLevel::STRICT_ACCESS:
+        ui->calculatorButton->setEnabled(true);
+        ui->materialsButton->setEnabled(false);
+        break;
+    default:
+        break;
+    }
+
+    this->show();
+}
+
 void MainWindow::openMaterialsWindow()
 {
     if (!materialsWindow) {

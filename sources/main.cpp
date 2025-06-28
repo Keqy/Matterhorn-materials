@@ -12,8 +12,9 @@ int main(int argc, char *argv[])
     if (!loginDialog.exec()) {
         return 0x00001;
     }
+    int accessLevel = loginDialog.userAccessLevel;
 
     MainWindow mainWindow;
-    mainWindow.show();
+    mainWindow.showWithAccess(accessLevel);
     return a.exec();
 }
