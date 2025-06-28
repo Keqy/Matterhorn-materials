@@ -28,6 +28,7 @@ private:
 };
 
 namespace CRUD {
+void selectUserAccess(QSqlQuery &query, const QString &login, const QString &password);
 void selectMaterialCategories(QSqlQuery &query);
 void selectWorkCategories(QSqlQuery &query);
 void selectMaterialTypesByCategory(QSqlQuery &query, QString categoryName);

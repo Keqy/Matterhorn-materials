@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoginWindow</class>
- <widget class="QWidget" name="LoginWindow">
+ <class>LoginDialog</class>
+ <widget class="QDialog" name="LoginDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>348</width>
-    <height>349</height>
+    <height>369</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>348</width>
-    <height>349</height>
+    <height>369</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>348</width>
-    <height>349</height>
+    <height>369</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -32,12 +32,6 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="matterhornLogo">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="text">
       <string/>
      </property>
@@ -47,69 +41,50 @@
      <property name="scaledContents">
       <bool>true</bool>
      </property>
-     <property name="margin">
-      <number>3</number>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QFormLayout" name="loginLayout">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>327</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="loginLabel">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
+      <widget class="QLabel" name="label">
        <property name="text">
         <string>Логин</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="loginLine">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="loginLine"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="passwordLabel">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
+      <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Пароль</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="passwordLine">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="passwordLine"/>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QLabel" name="errorLabel">
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 0, 0);</string>
      </property>
@@ -119,7 +94,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonsLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -135,27 +110,21 @@
      </item>
      <item>
       <widget class="QPushButton" name="loginButton">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
        <property name="text">
         <string>Войти</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="exitButton">
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <bold>false</bold>
-        </font>
-       </property>
        <property name="text">
         <string>Закрыть</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

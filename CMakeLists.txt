@@ -25,7 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Matterhorn-materials
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        sources/include/loginwindow.h sources/loginwindow.cpp sources/gui/loginwindow.ui
+
         resources/resources.qrc
         sources/include/materialswindow.h sources/materialswindow.cpp sources/gui/materialswindow.ui
 
@@ -35,6 +35,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sources/include/treechangetracker.h sources/treechangetracker.cpp
         sources/include/addmaterialdialog.h sources/addmaterialdialog.cpp sources/gui/addmaterialdialog.ui
         sources/include/material.h
+        sources/include/logindialog.h sources/logindialog.cpp sources/gui/logindialog.ui
+
+
+
+
 
 
 

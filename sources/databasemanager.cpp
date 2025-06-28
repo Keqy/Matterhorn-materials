@@ -8,6 +8,14 @@
 
 namespace CRUD {
 // --SELECT.
+void selectUserAccess(QSqlQuery &query, const QString &login, const QString &password)
+{
+    query.prepare("SELECT access_level FROM users WHERE login=? AND password=crypt(?, password);");
+    query.addBindValue(login);
+    query.addBindValue(password);
+    query.exec();
+}
+
 void selectMaterialCategories(QSqlQuery &query)
 {
     query.exec("SELECT name "
