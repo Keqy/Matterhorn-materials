@@ -27,56 +27,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="measureLine">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>30</y>
-     <width>81</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="costPriceLine">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>151</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="minAmountLine">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>90</y>
-     <width>81</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="weightLine">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>90</y>
-     <width>121</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="wasteRateLine">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>150</y>
-     <width>81</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -134,12 +84,12 @@
     <rect>
      <x>270</x>
      <y>70</y>
-     <width>21</width>
+     <width>51</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Вес</string>
+    <string>Вес (кг.)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -195,6 +145,106 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="measureBox">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>30</y>
+     <width>81</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="currentText">
+    <string>мм2</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>мм2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>мм</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>см2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>см</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QDoubleSpinBox" name="wasteRateBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>150</y>
+     <width>62</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="stepType">
+    <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="weightBox">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>90</y>
+     <width>62</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="stepType">
+    <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="minAmountBox">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>90</y>
+     <width>81</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>2147483647</number>
+   </property>
+   <property name="stepType">
+    <enum>QAbstractSpinBox::StepType::DefaultStepType</enum>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="priceBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>90</y>
+     <width>141</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="wrapping">
+    <bool>false</bool>
+   </property>
+   <property name="frame">
+    <bool>true</bool>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+   </property>
+   <property name="maximum">
+    <number>2147483647</number>
+   </property>
+   <property name="singleStep">
+    <number>100</number>
    </property>
   </widget>
  </widget>

@@ -249,6 +249,9 @@ void MaterialsWindow::execAddMaterialDialog()
     }
 
     AddMaterialDialog addMaterialDialog;
+    QString typeName = ui->materialsTreeWidget->currentItem()->text(0);
+    addMaterialDialog.setMaterialName(typeName);
+
     if (!addMaterialDialog.exec()) {
         return;
     }
@@ -256,7 +259,6 @@ void MaterialsWindow::execAddMaterialDialog()
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
     Material newMaterial = addMaterialDialog.getMaterial();
-    QString typeName = ui->materialsTreeWidget->currentItem()->text(0);
 
     CRUD::insertMaterial(query, typeName, newMaterial);
     if (query.lastError().isValid()) {

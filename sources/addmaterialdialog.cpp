@@ -16,14 +16,19 @@ AddMaterialDialog::~AddMaterialDialog()
     delete ui;
 }
 
+void AddMaterialDialog::setMaterialName(const QString &name)
+{
+    ui->nameLine->setText(name);
+}
+
 void AddMaterialDialog::saveAndExit()
 {
     material.name = ui->nameLine->text();
-    material.measure = ui->measureLine->text();
-    material.costPrice = ui->costPriceLine->text();
-    material.minAmount = ui->minAmountLine->text();
-    material.weight = ui->weightLine->text();
-    material.wasteRate = ui->wasteRateLine->text();
+    material.measure = ui->measureBox->currentText();
+    material.costPrice = ui->priceBox->text();
+    material.minAmount = ui->minAmountBox->text();
+    material.weight = ui->weightBox->text();
+    material.wasteRate = ui->wasteRateBox->text();
 
     if (material.isFilled()) {
         QDialog::accept();
