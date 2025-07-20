@@ -27,8 +27,8 @@ void AddMaterialDialog::saveAndExit()
     material.measure = ui->measureBox->currentText();
     material.costPrice = ui->priceBox->text();
     material.minAmount = ui->minAmountBox->text();
-    material.weight = ui->weightBox->text();
-    material.wasteRate = ui->wasteRateBox->text();
+    material.weight = QString::number(ui->weightBox->value());
+    material.wasteRate = QString::number(ui->wasteRateBox->value());
 
     if (material.isFilled()) {
         QDialog::accept();
@@ -37,7 +37,7 @@ void AddMaterialDialog::saveAndExit()
     }
 }
 
-Material AddMaterialDialog::getMaterial() const
+const Material AddMaterialDialog::getMaterial() const
 {
     return material;
 }

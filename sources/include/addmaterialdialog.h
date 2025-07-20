@@ -18,7 +18,7 @@ public:
     ~AddMaterialDialog();
 
     void setMaterialName(const QString &name);
-    Material getMaterial() const;
+    const Material getMaterial() const;
 
 private:
     Ui::AddMaterialDialog *ui;

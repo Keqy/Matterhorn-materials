@@ -17,10 +17,10 @@ public:
     {
         if (name.isEmpty() ||
             measure.isEmpty() ||
-            costPrice.isEmpty() ||
-            minAmount.isEmpty() ||
-            weight.isEmpty() ||
-            wasteRate.isEmpty()) {
+            costPrice.isEmpty() || costPrice.startsWith("0") ||
+            minAmount.isEmpty() || minAmount.startsWith("0") ||
+            weight.isEmpty() || weight == "0.00" ||
+            wasteRate.isEmpty() || wasteRate == "0.00") {
             return false;
         } else {
             return true;

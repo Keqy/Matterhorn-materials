@@ -44,7 +44,7 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <widget class="QPushButton" name="editButton">
+  <widget class="QPushButton" name="editMaterialsTreeButton">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -57,7 +57,7 @@
     <string>Редактировать</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="addButton">
+  <widget class="QPushButton" name="addMaterialButton">
    <property name="geometry">
     <rect>
      <x>920</x>
@@ -70,7 +70,7 @@
     <string>Добавить</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="removeButton">
+  <widget class="QPushButton" name="deleteMaterialButton">
    <property name="geometry">
     <rect>
      <x>1090</x>
@@ -83,7 +83,7 @@
     <string>Удалить</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="deleteExtraMaterialOptionButton">
    <property name="geometry">
     <rect>
      <x>590</x>
@@ -96,7 +96,7 @@
     <string>Удалить</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="addExtraMaterialOptionButton">
    <property name="geometry">
     <rect>
      <x>420</x>
@@ -123,32 +123,6 @@
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Vertical</enum>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_3">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>620</y>
-     <width>151</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Редактировать</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addButton_2">
-   <property name="geometry">
-    <rect>
-     <x>760</x>
-     <y>300</y>
-     <width>151</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Редактировать</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -365,7 +339,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QTableWidget" name="materialsExtraOptionsTableWidget">
+     <widget class="QTableWidget" name="extraMaterialOptionsTable">
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
       </property>

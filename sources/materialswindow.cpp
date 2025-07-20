@@ -3,6 +3,7 @@
 #include "ui_materialswindow.h"
 #include "include/editmaterialstreewidgetdialog.h"
 #include "include/addmaterialdialog.h"
+#include "include/addextramaterialoptiondialog.h"
 
 #include <QMessageBox>
 #include <QSqlError>
@@ -13,9 +14,11 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QObject::connect(ui->materialsTreeWidget, &QTreeWidget::itemClicked, this, &MaterialsWindow::parseSelectedTypeMaterials);
-    QObject::connect(ui->addButton, &QPushButton::clicked, this, &MaterialsWindow::execAddMaterialDialog);
-    QObject::connect(ui->removeButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterial);
-    QObject::connect(ui->editButton, &QPushButton::clicked, this, &MaterialsWindow::execEditMaterialsTreeWidgetDialog);
+    QObject::connect(ui->addMaterialButton, &QPushButton::clicked, this, &MaterialsWindow::execAddMaterialDialog);
+    QObject::connect(ui->deleteMaterialButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterial);
+    QObject::connect(ui->editMaterialsTreeButton, &QPushButton::clicked, this, &MaterialsWindow::execEditMaterialsTreeWidgetDialog);
+    QObject::connect(ui->addExtraMaterialOptionButton, &QPushButton::clicked, this, &MaterialsWindow::execAddExtraMaterialOptionDialog);
+    QObject::connect(ui->materialsTableWidget, &QTableWidget::itemClicked, this, &MaterialsWindow::parseExtraMaterialOptions);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -137,6 +140,28 @@ void MaterialsWindow::parseSelectedTypeMaterials()
     }
 }
 
+void MaterialsWindow::parseExtraMaterialOptions()
+{
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    const int materialTableCurrentRow = ui->materialsTableWidget->currentRow();
+    const int materialId = ui->materialsTableWidget->item(materialTableCurrentRow, 0)->text().toInt();
+    CRUD::selectExtraMaterialOptions(query, materialId);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+
+    ui->extraMaterialOptionsTable->setRowCount(query.size());
+    int row = 0;
+    while (query.next()) {
+        for (int i = 0; i < ui->extraMaterialOptionsTable->columnCount(); ++i) {
+            ui->extraMaterialOptionsTable->setItem(row, i, new QTableWidgetItem(query.value(i).toString()));
+        }
+        ++row;
+    }
+}
+
 void MaterialsWindow::removeMaterial()
 {
     int currentRow = ui->materialsTableWidget->currentRow();
@@ -168,6 +193,8 @@ void MaterialsWindow::removeMaterial()
         }
         ui->materialsTableWidget->removeRow(currentRow);
     }
+
+    ui->extraMaterialOptionsTable->clear();
 }
 
 void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
@@ -268,6 +295,35 @@ void MaterialsWindow::execAddMaterialDialog()
     parseSelectedTypeMaterials();
 }
 
+void MaterialsWindow::execAddExtraMaterialOptionDialog()
+{
+    int currentRow = ui->materialsTableWidget->currentRow();
+    if (currentRow < 0) {
+        QMessageBox::information(this,
+                                 "Невозможно добавить параметр",
+                                 "Выберите материал");
+        return;
+    }
+
+    AddExtraMaterialOptionDialog extraOptionDialog;
+
+    if (!extraOptionDialog.exec()) {
+        return;
+    }
+
+    const ExtraMaterialOption option = extraOptionDialog.getOption();
+    const int materialId = ui->materialsTableWidget->item(currentRow, 0)->text().toInt();
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+    CRUD::insertExtraMaterialOption(query, materialId, option);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+
+    parseExtraMaterialOptions();
+}
+
 // --- UI
 // All the "set...ColumnWidth" functions will needs refactoring
 // if the MaterialsWindow size is going change.
@@ -284,9 +340,9 @@ inline void MaterialsWindow::setMaterialsTableColumnWidth()
 
 inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
 {
-    ui->materialsExtraOptionsTableWidget->setColumnWidth(0, 247);
-    ui->materialsExtraOptionsTableWidget->setColumnWidth(1, 140);
-    ui->materialsExtraOptionsTableWidget->setColumnWidth(2, 99);
+    ui->extraMaterialOptionsTable->setColumnWidth(0, 247);
+    ui->extraMaterialOptionsTable->setColumnWidth(1, 140);
+    ui->extraMaterialOptionsTable->setColumnWidth(2, 99);
 }
 
 inline void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()

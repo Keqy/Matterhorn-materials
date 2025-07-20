@@ -90,6 +90,13 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name)
                "FROM materials m;");
 }
 
+void selectExtraMaterialOptions(QSqlQuery &query, const int &materialId)
+{
+    query.prepare("SELECT name, value, measure FROM extra_material_options WHERE material_id = ?;");
+    query.addBindValue(materialId);
+    query.exec();
+}
+
 // --INSERT.
 void insertCategory(QSqlQuery &query, const TreeChange &category)
 {
@@ -125,7 +132,7 @@ void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &m
                     "waste_rate) "
                   "VALUES("
                     "(SELECT id FROM material_types WHERE name = ?), "
-                    "?, ?, ?, ?, ?, ?)");
+                    "?, ?, ?, ?, ?, ?);");
     query.addBindValue(typeName);
     query.addBindValue(material.name);
     query.addBindValue(material.measure);
@@ -133,6 +140,22 @@ void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &m
     query.addBindValue(material.minAmount);
     query.addBindValue(material.weight);
     query.addBindValue(material.wasteRate);
+    query.exec();
+}
+
+void insertExtraMaterialOption(QSqlQuery &query, const int &materialId, const ExtraMaterialOption &option)
+{
+    query.prepare("INSERT INTO "
+                  "extra_material_options("
+                    "material_id, "
+                    "name, "
+                    "value, "
+                    "measure) "
+                  "VALUES(?, ?, ?, ?);");
+    query.addBindValue(materialId);
+    query.addBindValue(option.name);
+    query.addBindValue(option.value);
+    query.addBindValue(option.measure);
     query.exec();
 }
 

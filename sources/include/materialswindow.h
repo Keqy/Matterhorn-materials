@@ -33,6 +33,7 @@ private:
     inline void setMaterialsExtraOptionsTableColumnWidth();
     inline void setMaterialWorkAppropriatenessTableColumnWidth();
     void updateMaterialsTreeWidget();
+    void parseExtraMaterialOptions();
     void parseSelectedTypeMaterials();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
@@ -50,6 +51,7 @@ private:
     // Dialog.
     void execEditMaterialsTreeWidgetDialog();
     void execAddMaterialDialog();
+    void execAddExtraMaterialOptionDialog();
 };
 
 #endif // MATERIALSWINDOW_H

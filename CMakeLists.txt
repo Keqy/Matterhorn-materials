@@ -36,6 +36,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sources/include/addmaterialdialog.h sources/addmaterialdialog.cpp sources/gui/addmaterialdialog.ui
         sources/include/material.h
         sources/include/logindialog.h sources/logindialog.cpp sources/gui/logindialog.ui
+        sources/include/addextramaterialoptiondialog.h sources/addextramaterialoptiondialog.cpp sources/gui/addextramaterialoptiondialog.ui
+        sources/include/extramaterialoption.h
 
 
 
