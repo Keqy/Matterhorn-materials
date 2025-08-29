@@ -11,7 +11,7 @@ struct ExtraMaterialOption
 
     bool isFilled()
     {
-        return !(name.isEmpty() && value.isEmpty() && measure.isEmpty());
+        return !(name.isEmpty() || (value == "0"));
     }
 };
 

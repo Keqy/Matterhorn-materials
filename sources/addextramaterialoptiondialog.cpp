@@ -7,6 +7,8 @@ AddExtraMaterialOptionDialog::AddExtraMaterialOptionDialog(QWidget *parent)
 {
     ui->setupUi(this);
     QObject::connect(ui->saveButton, &QPushButton::clicked, this, &AddExtraMaterialOptionDialog::saveAndExit);
+    QObject::connect(ui->exitButton, &QPushButton::clicked, this, &AddExtraMaterialOptionDialog::close);
+    ui->nameLine->setFocus();
 }
 
 AddExtraMaterialOptionDialog::~AddExtraMaterialOptionDialog()

@@ -23,6 +23,7 @@ signals:
     void errorOccurred(const QString &title, const QString &error);
 
 protected:
+    void resizeEvent(QResizeEvent *event) override;
     //void closeEvent(QCloseEvent *event) override;
 
 private:
@@ -38,6 +39,7 @@ private:
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
     void removeMaterial();
+    void removeExtraMaterialOption();
     bool isMaterialTypeSelected() const;
     bool isMaterialCategorySelected() const;
     bool isMaterialRootSelected() const;

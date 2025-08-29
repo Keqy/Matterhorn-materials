@@ -18,6 +18,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     QObject::connect(ui->deleteMaterialButton, &QPushButton::clicked, this, &MaterialsWindow::removeMaterial);
     QObject::connect(ui->editMaterialsTreeButton, &QPushButton::clicked, this, &MaterialsWindow::execEditMaterialsTreeWidgetDialog);
     QObject::connect(ui->addExtraMaterialOptionButton, &QPushButton::clicked, this, &MaterialsWindow::execAddExtraMaterialOptionDialog);
+    QObject::connect(ui->deleteExtraMaterialOptionButton, &QPushButton::clicked, this, &MaterialsWindow::removeExtraMaterialOption);
     QObject::connect(ui->materialsTableWidget, &QTableWidget::itemClicked, this, &MaterialsWindow::parseExtraMaterialOptions);
 
     QSqlDatabase db;
@@ -27,6 +28,9 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
         QMessageBox::critical(this, "Ошибка соединения с БД", dbManager.lastError());
     }
 
+
+    ui->materialsTableWidget->hideColumn(0);
+    ui->extraMaterialOptionsTable->hideColumn(0);
     setMaterialsTableColumnWidth();
     setMaterialsExtraOptionsTableColumnWidth();
     setMaterialWorkAppropriatenessTableColumnWidth();
@@ -172,11 +176,10 @@ void MaterialsWindow::removeMaterial()
                                  "Выберите материал для удаления");
         return;
     }
+    int materialId = ui->materialsTableWidget->item(currentRow, 0)->text().toInt();
 
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
-
-    int materialId = ui->materialsTableWidget->item(currentRow, 0)->text().toInt();
 
     QMessageBox msg(this);
     msg.setIcon(QMessageBox::Question);
@@ -192,9 +195,8 @@ void MaterialsWindow::removeMaterial()
             return;
         }
         ui->materialsTableWidget->removeRow(currentRow);
+        ui->extraMaterialOptionsTable->clearContents();
     }
-
-    ui->extraMaterialOptionsTable->clear();
 }
 
 void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
@@ -324,31 +326,71 @@ void MaterialsWindow::execAddExtraMaterialOptionDialog()
     parseExtraMaterialOptions();
 }
 
+void MaterialsWindow::removeExtraMaterialOption()
+{
+    int currentRow = ui->extraMaterialOptionsTable->currentRow();
+    if (currentRow < 0) {
+        QMessageBox::information(this,
+                                 "Не выбран параметр",
+                                 "Выберите параметр для удаления");
+        return;
+    }
+    int optionId = ui->extraMaterialOptionsTable->item(currentRow, 0)->text().toInt();
+
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+
+    QMessageBox msg(this);
+    msg.setIcon(QMessageBox::Question);
+    msg.setWindowTitle("Удаление параметра");
+    msg.setText("Вы уверены, что хотите удалить выделенный параметр?");
+    msg.addButton(QMessageBox::Yes)->setText("Да");
+    msg.addButton(QMessageBox::No)->setText("Нет");
+    msg.setWindowIcon(QIcon(":/images/logo/images/icon.ico"));
+    if (msg.exec() == QMessageBox::Yes) {
+        CRUD::deleteExtraMaterialOption(query, optionId);
+        if (query.lastError().isValid()) {
+            QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+            return;
+        }
+        ui->extraMaterialOptionsTable->removeRow(currentRow);
+    }
+}
+
 // --- UI
-// All the "set...ColumnWidth" functions will needs refactoring
-// if the MaterialsWindow size is going change.
+void MaterialsWindow::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    setMaterialsTableColumnWidth();
+    setMaterialsExtraOptionsTableColumnWidth();
+    setMaterialWorkAppropriatenessTableColumnWidth();
+}
+
 inline void MaterialsWindow::setMaterialsTableColumnWidth()
 {
-    ui->materialsTableWidget->hideColumn(0);
-    ui->materialsTableWidget->setColumnWidth(1, 350);
-    ui->materialsTableWidget->setColumnWidth(2, 100);
-    ui->materialsTableWidget->setColumnWidth(3, 170);
-    ui->materialsTableWidget->setColumnWidth(4, 130);
-    ui->materialsTableWidget->setColumnWidth(5, 110);
-    ui->materialsTableWidget->setColumnWidth(6, 100);
+    int tableWidth = ui->materialsTableWidget->width();
+    ui->materialsTableWidget->setColumnWidth(1, tableWidth / 2.15);
+    ui->materialsTableWidget->setColumnWidth(2, tableWidth / 11);
+    ui->materialsTableWidget->setColumnWidth(3, tableWidth / 10);
+    ui->materialsTableWidget->setColumnWidth(4, tableWidth / 13);
+    ui->materialsTableWidget->setColumnWidth(5, tableWidth / 14);
+    ui->materialsTableWidget->setColumnWidth(6, tableWidth / 14);
+    ui->materialsTableWidget->setColumnWidth(7, tableWidth / 9);
 }
 
 inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
 {
-    ui->extraMaterialOptionsTable->setColumnWidth(0, 247);
-    ui->extraMaterialOptionsTable->setColumnWidth(1, 140);
-    ui->extraMaterialOptionsTable->setColumnWidth(2, 99);
+    int tableWidth = ui->extraMaterialOptionsTable->width();
+    ui->extraMaterialOptionsTable->setColumnWidth(1, tableWidth / 2);
+    ui->extraMaterialOptionsTable->setColumnWidth(2, tableWidth / 4);
+    ui->extraMaterialOptionsTable->setColumnWidth(3, tableWidth / 4);
 }
 
 inline void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
 {
-    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, 243);
-    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, 243);
+    int tableWidth = ui->materialWorkAppropriatenessTableWidget->width();
+    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, tableWidth / 2);
+    ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, tableWidth / 2);
 }
 
 bool MaterialsWindow::isMaterialTypeSelected() const

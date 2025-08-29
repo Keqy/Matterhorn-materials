@@ -2,6 +2,8 @@
 #include "ui_addmaterialdialog.h"
 #include "include/material.h"
 
+#include <QDate>
+
 AddMaterialDialog::AddMaterialDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AddMaterialDialog)
@@ -29,6 +31,7 @@ void AddMaterialDialog::saveAndExit()
     material.minAmount = ui->minAmountBox->text();
     material.weight = QString::number(ui->weightBox->value());
     material.wasteRate = QString::number(ui->wasteRateBox->value());
+    material.date = QDate::currentDate().toString();
 
     if (material.isFilled()) {
         QDialog::accept();

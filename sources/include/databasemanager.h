@@ -46,5 +46,6 @@ void insertExtraMaterialOption(QSqlQuery &query, const int &materialId, const Ex
 void deleteCategory(QSqlQuery &query, const TreeChange &category);
 void deleteType(QSqlQuery &query, const TreeChange &type);
 void deleteMaterial(QSqlQuery &query, const int &id);
+void deleteExtraMaterialOption(QSqlQuery &query, const int &id);
 }
 #endif // DATABASEMANAGER_H

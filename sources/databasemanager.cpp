@@ -48,7 +48,8 @@ void selectMaterialsByType(QSqlQuery &query, const QString &typeName)
                   "m.cost_price, "
                   "m.min_amount, "
                   "m.weight, "
-                  "m.waste_rate "
+                  "m.waste_rate, "
+                  "to_char(m.last_edit_date, 'DD.MM.YYYY') "
                   "FROM materials m "
                   "JOIN material_types t "
                   "ON m.type_id = t.id "
@@ -66,7 +67,8 @@ void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName)
                   "m.cost_price, "
                   "m.min_amount, "
                   "m.weight, "
-                  "m.waste_rate "
+                  "m.waste_rate, "
+                  "to_char(m.last_edit_date, 'DD.MM.YYYY') "
                   "FROM materials m "
                   "JOIN material_types t "
                   "ON m.type_id = t.id "
@@ -86,13 +88,14 @@ void selectMaterialsByName(QSqlQuery &query, const QString &name)
                "m.cost_price, "
                "m.min_amount, "
                "m.weight, "
-               "m.waste_rate "
+               "m.waste_rate, "
+               "to_char(m.last_edit_date, 'DD.MM.YYYY') "
                "FROM materials m;");
 }
 
 void selectExtraMaterialOptions(QSqlQuery &query, const int &materialId)
 {
-    query.prepare("SELECT name, value, measure FROM extra_material_options WHERE material_id = ?;");
+    query.prepare("SELECT id, name, value, measure FROM extra_material_options WHERE material_id = ?;");
     query.addBindValue(materialId);
     query.exec();
 }
@@ -129,10 +132,11 @@ void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &m
                     "cost_price, "
                     "min_amount, "
                     "weight, "
-                    "waste_rate) "
+                    "waste_rate, "
+                    "last_edit_date) "
                   "VALUES("
                     "(SELECT id FROM material_types WHERE name = ?), "
-                    "?, ?, ?, ?, ?, ?);");
+                    "?, ?, ?, ?, ?, ?, ?);");
     query.addBindValue(typeName);
     query.addBindValue(material.name);
     query.addBindValue(material.measure);
@@ -140,6 +144,7 @@ void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &m
     query.addBindValue(material.minAmount);
     query.addBindValue(material.weight);
     query.addBindValue(material.wasteRate);
+    query.addBindValue(material.date);
     query.exec();
 }
 
@@ -182,7 +187,14 @@ void deleteType(QSqlQuery &query, const TreeChange &type)
 
 void deleteMaterial(QSqlQuery &query, const int &id)
 {
-    query.prepare("DELETE FROM materials WHERE id = ?");
+    query.prepare("DELETE FROM materials WHERE id = ?;");
+    query.addBindValue(id);
+    query.exec();
+}
+
+void deleteExtraMaterialOption(QSqlQuery &query, const int &id)
+{
+    query.prepare("DELETE FROM extra_material_options WHERE id = ?;");
     query.addBindValue(id);
     query.exec();
 }
