@@ -130,19 +130,7 @@ void MaterialsWindow::parseSelectedTypeMaterials()
         QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
         return;
     }
-
-    query.first(); // REFACTOR THIS...
-    if (query.isValid())
-    {
-        ui->materialsTableWidget->setRowCount(query.size());
-        int row = 0;
-        do { // AND THIS.
-            for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
-                ui->materialsTableWidget->setItem(row, i, new QTableWidgetItem(query.value(i).toString()));
-            }
-            ++row;
-        } while (query.next());
-    }
+    parseQueryInMaterialsTable(query);
 }
 
 void MaterialsWindow::parseMaterialsByName()
@@ -156,7 +144,11 @@ void MaterialsWindow::parseMaterialsByName()
         QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
         return;
     }
+    parseQueryInMaterialsTable(query);
+}
 
+void MaterialsWindow::parseQueryInMaterialsTable(QSqlQuery &query)
+{
     query.first(); // REFACTOR THIS...
     if (query.isValid()) {
         ui->materialsTableWidget->setRowCount(query.size());
@@ -436,8 +428,3 @@ bool MaterialsWindow::isMaterialRootSelected() const
     QTreeWidgetItem *item = ui->materialsTreeWidget->currentItem();
     return item && !(item->parent());
 }
-
-// void MaterialsWindow::closeEvent(QCloseEvent *event)
-// {
-//     MaterialsWindow::closeEvent(event);
-// }

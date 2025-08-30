@@ -24,7 +24,6 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
-    //void closeEvent(QCloseEvent *event) override;
 
 private:
     // UI.
@@ -39,6 +38,7 @@ private:
     void parseMaterialsByName();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
+    void parseQueryInMaterialsTable(QSqlQuery &query);
     void removeMaterial();
     void removeExtraMaterialOption();
     bool isMaterialTypeSelected() const;
