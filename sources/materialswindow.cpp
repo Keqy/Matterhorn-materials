@@ -20,6 +20,7 @@ MaterialsWindow::MaterialsWindow(QWidget *parent)
     QObject::connect(ui->addExtraMaterialOptionButton, &QPushButton::clicked, this, &MaterialsWindow::execAddExtraMaterialOptionDialog);
     QObject::connect(ui->deleteExtraMaterialOptionButton, &QPushButton::clicked, this, &MaterialsWindow::removeExtraMaterialOption);
     QObject::connect(ui->materialsTableWidget, &QTableWidget::itemClicked, this, &MaterialsWindow::parseExtraMaterialOptions);
+    QObject::connect(ui->searchLineEdit, &QLineEdit::textEdited, this, &MaterialsWindow::parseMaterialsByName);
 
     QSqlDatabase db;
     DatabaseManager dbManager;
@@ -133,6 +134,31 @@ void MaterialsWindow::parseSelectedTypeMaterials()
     query.first(); // REFACTOR THIS...
     if (query.isValid())
     {
+        ui->materialsTableWidget->setRowCount(query.size());
+        int row = 0;
+        do { // AND THIS.
+            for (int i = 0; i < ui->materialsTableWidget->columnCount(); ++i){
+                ui->materialsTableWidget->setItem(row, i, new QTableWidgetItem(query.value(i).toString()));
+            }
+            ++row;
+        } while (query.next());
+    }
+}
+
+void MaterialsWindow::parseMaterialsByName()
+{
+    QSqlDatabase db = QSqlDatabase::database("materials_connection");
+    QSqlQuery query(db);
+
+    const QString name = ui->searchLineEdit->text();
+    CRUD::selectMaterialsByName(query, name);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса к базе данных", query.lastError().text());
+        return;
+    }
+
+    query.first(); // REFACTOR THIS...
+    if (query.isValid()) {
         ui->materialsTableWidget->setRowCount(query.size());
         int row = 0;
         do { // AND THIS.
@@ -368,7 +394,7 @@ void MaterialsWindow::resizeEvent(QResizeEvent *event)
 
 inline void MaterialsWindow::setMaterialsTableColumnWidth()
 {
-    int tableWidth = ui->materialsTableWidget->width();
+    const int tableWidth = ui->materialsTableWidget->width();
     ui->materialsTableWidget->setColumnWidth(1, tableWidth / 2.15);
     ui->materialsTableWidget->setColumnWidth(2, tableWidth / 11);
     ui->materialsTableWidget->setColumnWidth(3, tableWidth / 10);
@@ -380,7 +406,7 @@ inline void MaterialsWindow::setMaterialsTableColumnWidth()
 
 inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
 {
-    int tableWidth = ui->extraMaterialOptionsTable->width();
+    const int tableWidth = ui->extraMaterialOptionsTable->width();
     ui->extraMaterialOptionsTable->setColumnWidth(1, tableWidth / 2);
     ui->extraMaterialOptionsTable->setColumnWidth(2, tableWidth / 4);
     ui->extraMaterialOptionsTable->setColumnWidth(3, tableWidth / 4);
@@ -388,7 +414,7 @@ inline void MaterialsWindow::setMaterialsExtraOptionsTableColumnWidth()
 
 inline void MaterialsWindow::setMaterialWorkAppropriatenessTableColumnWidth()
 {
-    int tableWidth = ui->materialWorkAppropriatenessTableWidget->width();
+    const int tableWidth = ui->materialWorkAppropriatenessTableWidget->width();
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(0, tableWidth / 2);
     ui->materialWorkAppropriatenessTableWidget->setColumnWidth(1, tableWidth / 2);
 }

@@ -36,6 +36,7 @@ private:
     void updateMaterialsTreeWidget();
     void parseExtraMaterialOptions();
     void parseSelectedTypeMaterials();
+    void parseMaterialsByName();
     void parseMaterialCategoriesInRootTreeWidgetItem(QList<QTreeWidgetItem *> categories, QTreeWidgetItem *rootTreeItem);
     void parseMaterialTypesInCategoryTreeWidgetItems(QList<QTreeWidgetItem *> categories);
     void removeMaterial();

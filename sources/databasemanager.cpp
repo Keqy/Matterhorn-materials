@@ -81,16 +81,19 @@ void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName)
 
 void selectMaterialsByName(QSqlQuery &query, const QString &name)
 {
-    query.exec("SELECT "
-               "m.id, "
-               "m.name, "
-               "m.measure, "
-               "m.cost_price, "
-               "m.min_amount, "
-               "m.weight, "
-               "m.waste_rate, "
-               "to_char(m.last_edit_date, 'DD.MM.YYYY') "
-               "FROM materials m;");
+    query.prepare("SELECT "
+                  "m.id, "
+                  "m.name, "
+                  "m.measure, "
+                  "m.cost_price, "
+                  "m.min_amount, "
+                  "m.weight, "
+                  "m.waste_rate, "
+                  "to_char(m.last_edit_date, 'DD.MM.YYYY') "
+                  "FROM materials m "
+                  "WHERE m.name ILIKE ?;");
+    query.addBindValue("%" + name + "%");
+    query.exec();
 }
 
 void selectExtraMaterialOptions(QSqlQuery &query, const int &materialId)
