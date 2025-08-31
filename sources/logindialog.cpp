@@ -20,6 +20,21 @@ LoginDialog::LoginDialog(QWidget *parent)
     if (!dbManager.lastError().isEmpty()) {
         QMessageBox::critical(this, "Ошибка соединения с БД", dbManager.lastError());
     }
+
+    authKey = qgetenv("USERNAME") + qgetenv("COMPUTERNAME");
+    db = QSqlDatabase::database("login_connection");
+    QSqlQuery query(db);
+    CRUD::selectUserAccessByAuthKey(query, authKey);
+    if (query.lastError().isValid()) {
+        QMessageBox::critical(this, "Ошибка запроса базы данных", query.lastError().text());
+        return;
+    }
+    if (query.first()) {
+        ui->loginLine->setText("************");
+        ui->passwordLine->setText("************");
+        isAuthKeyValid = true;
+        userAccessLevel = query.value(0).toInt();
+    }
 }
 
 LoginDialog::~LoginDialog()
@@ -35,28 +50,31 @@ void LoginDialog::login()
 
     QString login = ui->loginLine->text();
     QString password = ui->passwordLine->text();
+    if (login == "************" && password == "************" && isAuthKeyValid) {
+        LoginDialog::accept();
+        return;
+    }
 
-    //TODO: Перенести это в CRUD.
-    // if (!db.open()) {
-    //     QMessageBox::critical(this, "Ошибка базы данных", db.lastError().text());
-    // } else {
-    //     query.prepare("SELECT id FROM users WHERE login=? AND password=crypt(?, password);");
-    //     query.addBindValue(login);
-    //     query.addBindValue(password);
-    //     query.exec();
-    // }
     CRUD::selectUserAccess(query, login, password);
     if (query.lastError().isValid()) {
         QMessageBox::critical(this, "Ошибка запроса базы данных", query.lastError().text());
         return;
-    } else {
-        if (query.first()) {
-            userAccessLevel = query.value(0).toInt();
-            LoginDialog::accept();
-        } else {
-            ui->errorLabel->setText("Неправильный логин или пароль");
-            ui->passwordLine->clear();
+    } else if (query.first()) {
+        userAccessLevel = query.value(0).toInt();
+        if (ui->rememberMeCheckBox->isChecked() && login != "************") {
+            if (!db.transaction()) {
+                QMessageBox::critical(this, "Не удалось начать транзакцию в базу данных", db.lastError().text());
+            }
+            CRUD::deleteUserAuthKey(query, authKey);
+            CRUD::insertUserAuthKey(query, login, authKey);
+            if (!db.commit()) {
+                QMessageBox::critical(this, "Не удалось завершить транзакцию в базу данных", db.lastError().text());
+            }
         }
+        LoginDialog::accept();
+    } else {
+        ui->errorLabel->setText("Неправильный логин или пароль");
+        ui->passwordLine->clear();
     }
 }
 

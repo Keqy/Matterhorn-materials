@@ -47,8 +47,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${CMAKE_SOURCE_DIR}/sources/include/addextramaterialoptiondialog.h
         ${CMAKE_SOURCE_DIR}/sources/addextramaterialoptiondialog.cpp
         ${CMAKE_SOURCE_DIR}/sources/gui/addextramaterialoptiondialog.ui
-        sources/include/addextramaterialoptiondialog.h
-        sources/include/extramaterialoption.h
+        ${CMAKE_SOURCE_DIR}/sources/include/addextramaterialoptiondialog.h
+        ${CMAKE_SOURCE_DIR}/sources/include/extramaterialoption.h
+        ${CMAKE_SOURCE_DIR}/sources/include/confirmationmessagebox.h
     )
 else()
     if(ANDROID)

@@ -7,19 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>348</width>
-    <height>369</height>
+    <height>388</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>348</width>
-    <height>369</height>
+    <height>388</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>348</width>
-    <height>369</height>
+    <width>760</width>
+    <height>671</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -82,6 +88,13 @@
       <widget class="QLineEdit" name="passwordLine"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="rememberMeCheckBox">
+     <property name="text">
+      <string>Запомнить меня</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="errorLabel">

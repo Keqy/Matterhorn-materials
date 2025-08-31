@@ -1,6 +1,9 @@
 #include "include/editmaterialstreewidgetdialog.h"
 #include "ui_editmaterialstreewidgetdialog.h"
 #include "include/renamenewmaterialstreewidgetitemdialog.h"
+#include "include/confirmationmessagebox.h"
+
+#include <QMessageBox>
 
 EditMaterialsTreeWidgetDialog::EditMaterialsTreeWidgetDialog(QWidget *parent)
     : QDialog(parent)
@@ -71,24 +74,30 @@ void EditMaterialsTreeWidgetDialog::addType()
 void EditMaterialsTreeWidgetDialog::removeCategory()
 {
     if (isMaterialCategorySelected()) {
-        QModelIndex index = ui->materialsTreeView->currentIndex();
-        QModelIndex parentIndex = ui->materialsTreeView->model()->parent(index);
-        QString name = ui->materialsTreeView->model()->data(index).toString();
-        QString parentName = ui->materialsTreeView->model()->data(parentIndex).toString();
-        changeTracker->addDelete(name, parentName, ItemType::Category);
-        ui->materialsTreeView->model()->removeRow(index.row(), parentIndex);
+        ConfirmationMessageBox msg(this, "Вы уверены, что хотите удалить выбранную категорию?");
+        if (msg.exec() == QMessageBox::Yes) {
+            QModelIndex index = ui->materialsTreeView->currentIndex();
+            QModelIndex parentIndex = ui->materialsTreeView->model()->parent(index);
+            QString name = ui->materialsTreeView->model()->data(index).toString();
+            QString parentName = ui->materialsTreeView->model()->data(parentIndex).toString();
+            changeTracker->addDelete(name, parentName, ItemType::Category);
+            ui->materialsTreeView->model()->removeRow(index.row(), parentIndex);
+        }
     }
 }
 
 void EditMaterialsTreeWidgetDialog::removeType()
 {
     if (isMaterialTypeSelected()) {
-        QModelIndex index = ui->materialsTreeView->currentIndex();
-        QModelIndex parentIndex = ui->materialsTreeView->model()->parent(index);
-        QString name = ui->materialsTreeView->model()->data(index).toString();
-        QString parentName = ui->materialsTreeView->model()->data(parentIndex).toString();
-        changeTracker->addDelete(name, parentName, ItemType::Type);
-        ui->materialsTreeView->model()->removeRow(index.row(), parentIndex);
+        ConfirmationMessageBox msg(this, "Вы уверены, что хотите удалить выбранный тип?");
+        if (msg.exec() == QMessageBox::Yes) {
+            QModelIndex index = ui->materialsTreeView->currentIndex();
+            QModelIndex parentIndex = ui->materialsTreeView->model()->parent(index);
+            QString name = ui->materialsTreeView->model()->data(index).toString();
+            QString parentName = ui->materialsTreeView->model()->data(parentIndex).toString();
+            changeTracker->addDelete(name, parentName, ItemType::Type);
+            ui->materialsTreeView->model()->removeRow(index.row(), parentIndex);
+        }
     }
 }
 

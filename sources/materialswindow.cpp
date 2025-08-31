@@ -4,6 +4,7 @@
 #include "include/editmaterialstreewidgetdialog.h"
 #include "include/addmaterialdialog.h"
 #include "include/addextramaterialoptiondialog.h"
+#include "include/confirmationmessagebox.h"
 
 #include <QMessageBox>
 #include <QSqlError>
@@ -199,13 +200,7 @@ void MaterialsWindow::removeMaterial()
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
 
-    QMessageBox msg(this);
-    msg.setIcon(QMessageBox::Question);
-    msg.setWindowTitle("Удаление материала");
-    msg.setText("Вы уверены, что хотите удалить выделенный материал?");
-    msg.addButton(QMessageBox::Yes)->setText("Да");
-    msg.addButton(QMessageBox::No)->setText("Нет");
-    msg.setWindowIcon(QIcon(":/images/logo/images/icon.ico"));
+    ConfirmationMessageBox msg(this, "Вы уверены, что хотите удалить выделенный материал?");
     if (msg.exec() == QMessageBox::Yes) {
         CRUD::deleteMaterial(query, materialId);
         if (query.lastError().isValid()) {
@@ -222,6 +217,7 @@ void MaterialsWindow::execEditMaterialsTreeWidgetDialog()
     EditMaterialsTreeWidgetDialog editMaterialsTreeWidgetDialog;
     editMaterialsTreeWidgetDialog.setMaterialsTreeView(ui->materialsTreeWidget->model());
     if (!editMaterialsTreeWidgetDialog.exec()) {
+        updateMaterialsTreeWidget();
         return;
     }
 
@@ -358,13 +354,7 @@ void MaterialsWindow::removeExtraMaterialOption()
     QSqlDatabase db = QSqlDatabase::database("materials_connection");
     QSqlQuery query(db);
 
-    QMessageBox msg(this);
-    msg.setIcon(QMessageBox::Question);
-    msg.setWindowTitle("Удаление параметра");
-    msg.setText("Вы уверены, что хотите удалить выделенный параметр?");
-    msg.addButton(QMessageBox::Yes)->setText("Да");
-    msg.addButton(QMessageBox::No)->setText("Нет");
-    msg.setWindowIcon(QIcon(":/images/logo/images/icon.ico"));
+    ConfirmationMessageBox msg(this, "Вы уверены, что хотите удалить выделенный параметр?");
     if (msg.exec() == QMessageBox::Yes) {
         CRUD::deleteExtraMaterialOption(query, optionId);
         if (query.lastError().isValid()) {

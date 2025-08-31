@@ -29,6 +29,7 @@ private:
 };
 
 namespace CRUD {
+void selectUserAccessByAuthKey(QSqlQuery &query, const QString &authKey);
 void selectUserAccess(QSqlQuery &query, const QString &login, const QString &password);
 void selectMaterialCategories(QSqlQuery &query);
 void selectWorkCategories(QSqlQuery &query);
@@ -38,11 +39,13 @@ void selectMaterialsByCategory(QSqlQuery &query, const QString &categoryName);
 void selectMaterialsByName(QSqlQuery &query, const QString &name);
 void selectExtraMaterialOptions(QSqlQuery &query, const int &materialId);
 
+void insertUserAuthKey(QSqlQuery &query, const QString &login, const QString &authKey);
 void insertCategory(QSqlQuery &query, const TreeChange &category);
 void insertType(QSqlQuery &query, const TreeChange &type);
 void insertMaterial(QSqlQuery &query, const QString &typeName, const Material &material);
 void insertExtraMaterialOption(QSqlQuery &query, const int &materialId, const ExtraMaterialOption &option);
 
+void deleteUserAuthKey(QSqlQuery &query, const QString &authKey);
 void deleteCategory(QSqlQuery &query, const TreeChange &category);
 void deleteType(QSqlQuery &query, const TreeChange &type);
 void deleteMaterial(QSqlQuery &query, const int &id);

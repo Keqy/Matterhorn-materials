@@ -28,6 +28,8 @@ private:
     void exit();
     void setLoginButtonFocus();
     void setPasswordLineFocus();
+    bool isAuthKeyValid = false;
+    QString authKey;
 };
 
 #endif // LOGINDIALOG_H

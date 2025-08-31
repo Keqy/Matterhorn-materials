@@ -8,6 +8,13 @@
 
 namespace CRUD {
 // --SELECT.
+void selectUserAccessByAuthKey(QSqlQuery &query, const QString &authKey)
+{
+    query.prepare("SELECT access_level FROM users WHERE auth_key=crypt(?, auth_key)");
+    query.addBindValue(authKey);
+    query.exec();
+}
+
 void selectUserAccess(QSqlQuery &query, const QString &login, const QString &password)
 {
     query.prepare("SELECT access_level FROM users WHERE login=? AND password=crypt(?, password);");
@@ -104,6 +111,14 @@ void selectExtraMaterialOptions(QSqlQuery &query, const int &materialId)
 }
 
 // --INSERT.
+void insertUserAuthKey(QSqlQuery &query, const QString &login, const QString &authKey)
+{
+    query.prepare("UPDATE users SET auth_key=crypt(?, gen_salt('md5')) WHERE login=?;");
+    query.addBindValue(authKey);
+    query.addBindValue(login);
+    query.exec();
+}
+
 void insertCategory(QSqlQuery &query, const TreeChange &category)
 {
     query.prepare("INSERT INTO "
@@ -168,6 +183,14 @@ void insertExtraMaterialOption(QSqlQuery &query, const int &materialId, const Ex
 }
 
 // --DELETE.
+void deleteUserAuthKey(QSqlQuery &query, const QString &authKey)
+{
+    query.prepare("UPDATE users "
+                  "SET auth_key=NULL "
+                  "WHERE auth_key=crypt(?, auth_key)");
+    query.addBindValue(authKey);
+    query.exec();
+}
 void deleteCategory(QSqlQuery &query, const TreeChange &category)
 {
     query.prepare("DELETE FROM "
